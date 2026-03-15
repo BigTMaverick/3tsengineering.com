@@ -1,0 +1,62 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0052CC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D3557;stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0099FF;stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background for preview (remove for production use on transparent backgrounds) -->
+  <rect width="256" height="256" fill="#FFFFFF" rx="32"/>
+
+  <!-- Main Mark Container -->
+  <g transform="translate(128, 128)">
+
+    <!-- Three interlocking T shapes in dynamic arrangement -->
+
+    <!-- First T - primary vertical element -->
+    <g id="firstT">
+      <!-- Horizontal bar -->
+      <rect x="-28" y="-42" width="56" height="10" fill="url(#primaryGradient)" rx="2"/>
+      <!-- Vertical stroke -->
+      <rect x="-8" y="-38" width="16" height="72" fill="url(#primaryGradient)" rx="3"/>
+    </g>
+
+    <!-- Second T - rotated right, cyan accent -->
+    <g id="secondT" transform="rotate(-35)">
+      <rect x="-22" y="-35" width="44" height="8" fill="url(#accentGradient)" rx="2"/>
+      <rect x="-6" y="-31" width="12" height="58" fill="url(#accentGradient)" rx="2"/>
+    </g>
+
+    <!-- Third T - rotated left, muted primary -->
+    <g id="thirdT" transform="rotate(35)">
+      <rect x="-22" y="-35" width="44" height="8" fill="url(#primaryGradient)" rx="2" opacity="0.75"/>
+      <rect x="-6" y="-31" width="12" height="58" fill="url(#primaryGradient)" rx="2" opacity="0.75"/>
+    </g>
+
+    <!-- Central hub - represents AI/connectivity -->
+    <circle cx="0" cy="0" r="20" fill="none" stroke="url(#accentGradient)" stroke-width="2" opacity="0.5"/>
+    <circle cx="0" cy="0" r="12" fill="none" stroke="url(#accentGradient)" stroke-width="1" opacity="0.3"/>
+
+    <!-- Core point with glow -->
+    <circle cx="0" cy="0" r="4" fill="url(#accentGradient)" filter="url(#softGlow)"/>
+
+    <!-- Subtle connection lines to suggest network/AI -->
+    <line x1="0" y1="0" x2="0" y2="-50" stroke="url(#accentGradient)" stroke-width="1.5" opacity="0.3"/>
+    <line x1="0" y1="0" x2="35" y2="35" stroke="url(#accentGradient)" stroke-width="1.5" opacity="0.3"/>
+    <line x1="0" y1="0" x2="-35" y2="35" stroke="url(#accentGradient)" stroke-width="1.5" opacity="0.3"/>
+  </g>
+</svg>

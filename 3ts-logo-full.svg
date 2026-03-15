@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="200" viewBox="0 0 680 200">
+  <!-- 3T's Engineering.AI — Version 1 Logo -->
+  <!-- Gear mark -->
+  <circle cx="88" cy="100" r="52" fill="none" stroke="#E24B4A" stroke-width="2"/>
+  <circle cx="88" cy="100" r="40" fill="none" stroke="#F09595" stroke-width="0.75" stroke-dasharray="4 3"/>
+  <!-- 8 gear teeth -->
+  <g fill="none" stroke="#E24B4A" stroke-width="7" stroke-linecap="square">
+    <line x1="88"  y1="45"  x2="88"  y2="36"/>
+    <line x1="88"  y1="155" x2="88"  y2="164"/>
+    <line x1="130" y1="58"  x2="136" y2="52"/>
+    <line x1="46"  y1="142" x2="40"  y2="148"/>
+    <line x1="143" y1="100" x2="152" y2="100"/>
+    <line x1="33"  y1="100" x2="24"  y2="100"/>
+    <line x1="130" y1="142" x2="136" y2="148"/>
+    <line x1="46"  y1="58"  x2="40"  y2="52"/>
+  </g>
+  <!-- Standard T -->
+  <rect x="66" y="84"  width="44" height="7"  rx="2" fill="#E24B4A"/>
+  <rect x="81" y="91"  width="14" height="24" rx="2" fill="#E24B4A"/>
+  <!-- Triple dot accent -->
+  <circle cx="124" cy="68" r="3" fill="#E24B4A"/>
+  <circle cx="114" cy="60" r="3" fill="#E24B4A"/>
+  <circle cx="104" cy="53" r="3" fill="#E24B4A"/>
+  <!-- Wordmark -->
+  <text x="158" y="87" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#2C2C2A">3T's Engineering</text>
+  <!-- Divider line -->
+  <line x1="158" y1="97" x2="566" y2="97" stroke="#F09595" stroke-width="0.5"/>
+  <!-- Tagline -->
+  <text font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="3">
+    <tspan x="158" y="117" font-weight="400" fill="#A32D2D">MANUFACTURING  ·  OPERATIONS  ·  </tspan><tspan font-weight="700" fill="#A32D2D">AI</tspan>
+  </text>
+</svg>
