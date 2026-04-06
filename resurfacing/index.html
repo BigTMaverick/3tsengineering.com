@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 T's Engineering.AI — Pebble Stone Epoxy Automation</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== VARIABLES ===== */
+        :root {
+            --primary: #4a90d9;
+            --primary-dark: #2d6cb5;
+            --accent: #00d4aa;
+            --accent-dark: #00a884;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --success: #27ae60;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-input: #16213e;
+            --border: #2a2a4a;
+            --text: #e0e0e0;
+            --text-muted: #8888aa;
+            --radius: 12px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        /* ===== UTILITY ===== */
+        .hidden { display: none !important; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+        /* ===== STEP INDICATOR ===== */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        .step-dot {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+        .step-dot.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(74,144,217,0.4);
+        }
+        .step-dot.completed {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+        .step-label {
+            font-size: 9px;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .step-item { display: flex; flex-direction: column; align-items: center; width: 50px; }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+        .card h2 {
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .card .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* ===== FORMS ===== */
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74,144,217,0.15);
+        }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-accent { background: var(--accent); color: #0f0f1a; }
+        .btn-accent:hover { background: var(--accent-dark); }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-lg { padding: 16px 36px; font-size: 17px; }
+        .btn-block { width: 100%; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-group { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+
+        /* ===== LOGIN SCREEN ===== */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+        .login-logo {
+            font-size: 42px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: -1px;
+        }
+        .login-logo span { color: var(--accent); }
+        .login-tagline {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 32px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .login-error {
+            background: rgba(231,76,60,0.15);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--danger);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        /* ===== APP HEADER ===== */
+        .app-header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .app-header .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .app-header .logo span { color: var(--accent); }
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .job-uuid-badge {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .app-header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .user-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 700; font-size: 13px;
+        }
+        .role-badge {
+            background: rgba(74,144,217,0.2);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        /* ===== COLOR PICKER ===== */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+        @media (max-width: 600px) { .color-grid { grid-template-columns: repeat(3, 1fr); } }
+        .color-swatch {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        .color-swatch:hover { transform: scale(1.05); }
+        .color-swatch.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 16px rgba(0,212,170,0.4);
+        }
+        .color-swatch.selected::after {
+            content: '\2713';
+            position: absolute;
+            top: 8px; right: 8px;
+            width: 22px; height: 22px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+            color: #fff;
+        }
+
+        /* ===== MEASUREMENT ===== */
+        .measurement-areas { margin: 16px 0; }
+        .area-item {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .area-item .area-label { flex: 1; font-weight: 600; }
+        .area-item .area-sqft { color: var(--accent); font-weight: 700; font-size: 18px; }
+        .area-item .remove-area {
+            background: none; border: none; color: var(--danger);
+            cursor: pointer; font-size: 18px; padding: 4px;
+        }
+        .total-sqft {
+            background: rgba(0,212,170,0.1);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            margin: 16px 0;
+        }
+        .total-sqft .number { font-size: 36px; font-weight: 800; color: var(--accent); }
+        .total-sqft .label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; }
+
+        /* ===== PRICING ===== */
+        .price-breakdown {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+        }
+        .price-row:last-child { border-bottom: none; }
+        .price-row.total {
+            background: rgba(0,212,170,0.1);
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        .price-row.deposit { color: var(--warning); font-weight: 600; }
+        .price-row.balance { color: var(--text-muted); }
+        .min-price-warning {
+            background: rgba(243,156,18,0.15);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--warning);
+            font-size: 13px;
+            margin: 8px 0;
+        }
+        .discount-cap-warning {
+            background: rgba(231,76,60,0.15);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--danger);
+            font-size: 13px;
+            margin: 8px 0;
+        }
+
+        /* ===== BID PREVIEW ===== */
+        .bid-preview {
+            background: #fff;
+            color: #222;
+            border-radius: 8px;
+            padding: 32px;
+            margin: 16px 0;
+            font-family: 'Georgia', serif;
+        }
+        .bid-preview h3 { color: #1a1a2e; font-size: 20px; margin-bottom: 16px; }
+        .bid-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 3px solid #1a1a2e;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+        .bid-header .company { font-size: 24px; font-weight: 800; color: #1a1a2e; }
+        .bid-header .doc-type { font-size: 28px; font-weight: 700; color: #333; }
+        .bid-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        .bid-info-grid .label { color: #888; }
+        .bid-info-grid .value { font-weight: 600; }
+        .bid-section {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .bid-section-header {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .bid-section-body { padding: 12px 16px; }
+        .bid-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .bid-table td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+        .bid-table .right { text-align: right; }
+        .bid-table .total-row { font-weight: 700; background: #f8f8f8; font-size: 16px; }
+        .bid-disclaimer {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 11px;
+            color: #666;
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        .bid-expiry {
+            text-align: center;
+            padding: 12px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #856404;
+            font-size: 13px;
+        }
+        .bid-signature-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 20px;
+        }
+        .sig-line {
+            border-top: 1px solid #333;
+            padding-top: 4px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* ===== STATUS BADGES ===== */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-success { background: rgba(39,174,96,0.2); color: var(--success); }
+        .badge-warning { background: rgba(243,156,18,0.2); color: var(--warning); }
+        .badge-danger { background: rgba(231,76,60,0.2); color: var(--danger); }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .section-title .step-num {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 700; font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* ===== MEASURE MAP PRO LINK ===== */
+        .mmp-banner {
+            background: linear-gradient(135deg, #2d6cb5, #4a90d9);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 16px 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .mmp-banner:hover { transform: translateY(-2px); }
+        .mmp-banner .mmp-icon {
+            width: 48px; height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+        }
+        .mmp-banner .mmp-text h4 { color: #fff; font-size: 15px; }
+        .mmp-banner .mmp-text p { color: rgba(255,255,255,0.7); font-size: 12px; }
+
+        /* ===== APPROVAL SCREEN ===== */
+        .approval-summary {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .approval-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .approval-row:last-child { border-bottom: none; }
+        .approval-row .label { color: var(--text-muted); }
+        .approval-row .value { font-weight: 600; }
+
+        /* ===== DOCUSIGN / STRIPE SCREENS ===== */
+        .integration-status {
+            text-align: center;
+            padding: 40px;
+        }
+        .integration-status .icon { font-size: 48px; margin-bottom: 16px; }
+        .integration-status h3 { color: #fff; margin-bottom: 8px; }
+        .integration-status p { color: var(--text-muted); font-size: 14px; }
+        .status-animation {
+            width: 60px; height: 60px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .success-check {
+            width: 60px; height: 60px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            color: #fff;
+            animation: scaleIn 0.3s ease;
+        }
+        @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+        /* ===== DISCOUNT INPUT ===== */
+        .discount-section {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .discount-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .discount-row input {
+            width: 100px;
+            padding: 8px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 14px;
+        }
+        .discount-row select {
+            padding: 8px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== LOGIN SCREEN (Step 0) ==================== -->
+<div id="login-screen">
+    <div class="login-box">
+        <div class="login-logo">3 <span>T's</span></div>
+        <div class="login-tagline">Engineering.AI</div>
+        <div style="color: var(--text-muted); font-size: 12px; margin-bottom: 24px;">Pebble Stone Epoxy Concrete Resurfacing</div>
+        <div id="login-error" class="login-error hidden">Invalid credentials. Try again.</div>
+        <div class="form-group">
+            <input type="text" id="login-user" placeholder="Username" autocomplete="username">
+        </div>
+        <div class="form-group">
+            <input type="password" id="login-pass" placeholder="Password" autocomplete="current-password">
+        </div>
+        <button class="btn btn-accent btn-block btn-lg" onclick="handleLogin()">Sign In</button>
+        <p style="color: var(--text-muted); font-size: 11px; margin-top: 16px;">
+            On-Site-to-Contract Automation
+        </p>
+    </div>
+</div>
+
+<!-- ==================== MAIN APP ==================== -->
+<div id="app-screen" class="hidden">
+    <!-- HEADER -->
+    <div class="app-header">
+        <div class="logo">3 <span>T's</span> Engineering.AI</div>
+        <div class="header-center">
+            <span class="job-uuid-badge" id="job-uuid-display"></span>
+        </div>
+        <div class="user-info">
+            <span id="user-display">Rep Name</span>
+            <span class="role-badge" id="role-display">Rep</span>
+            <div class="user-avatar" id="user-avatar">R</div>
+            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="handleLogout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- STEP INDICATOR -->
+    <div class="step-indicator" id="step-indicator"></div>
+
+    <!-- STEP CONTENT -->
+    <div class="container">
+
+        <!-- ===== STEP 1: CUSTOMER INTAKE ===== -->
+        <div id="step-1" class="step-content">
+            <div class="card">
+                <div class="section-title">
+                    <div class="step-num">1</div>
+                    <div>
+                        <h2>Customer Intake</h2>
+                        <div class="subtitle">Enter customer information and project details</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name *</label>
+                        <input type="text" id="cust-first" placeholder="John">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name *</label>
+                        <input type="text" id="cust-last" placeholder="Smith">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Property Address *</label>
+                    <input type="text" id="cust-address" placeholder="Start typing address..." autocomplete="off">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="cust-city" placeholder="St. Louis">
+                    </div>
+                    <div class="form-group">
+                        <label>State / ZIP</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="cust-state" placeholder="MO" style="width: 60px;">
+                            <input type="text" id="cust-zip" placeholder="63XXX" style="flex: 1;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="cust-email" placeholder="john@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone *</label>
+                        <input type="tel" id="cust-phone" placeholder="(314) 555-1234">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Project Type *</label>
+                    <select id="project-type">
+                        <option value="">Select surface type...</option>
+                        <option value="driveway">Driveway</option>
+                        <option value="patio">Patio</option>
+                        <option value="pool-deck">Pool Deck</option>
+                        <option value="garage">Garage Floor</option>
+                        <option value="porch">Porch / Entranceway</option>
+                        <option value="sidewalk">Sidewalk</option>
+                        <option value="basement">Basement</option>
+                        <option value="sunroom">Sunroom</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Notes (optional)</label>
+                    <textarea id="cust-notes" placeholder="Any pre-visit notes from the call..."></textarea>
+                </div>
+
+                <div class="btn-group" style="justify-content: flex-end;">
+                    <button class="btn btn-primary btn-lg" onclick="nextStep(2)">Continue to Measurement &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== STEP 2: MEASUREMENT ===== -->
+        <div id="step-2" class="step-content hidden">
+            <div class="card">
+                <div class="section-title">
+                    <div class="step-num">2</div>
+                    <div>
+                        <h2>Square Footage Measurement</h2>
+                        <div class="subtitle">Enter dimensions for each area</div>
+                    </div>
+                </div>
+
+                <!-- Measure Map Pro Banner — iOS only, injected by JS -->
+                <div id="mmp-banner-container"></div>
+
+                <h3 style="margin: 20px 0 12px; font-size: 16px; color: #fff;">Add Measurement Areas</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Area Name</label>
+                        <input type="text" id="area-name" placeholder="e.g., Main Surface, Border, Repair Zone">
+                    </div>
+                    <div class="form-group">
+                        <label>Shape</label>
+                        <select id="area-shape" onchange="updateShapeFields()">
+                            <option value="rectangle">Rectangle (L x W)</option>
+                            <option value="circle">Circle (Diameter)</option>
+                            <option value="custom">Custom (Enter Sq Ft)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="shape-fields">
+                    <div class="form-row" id="rect-fields">
+                        <div class="form-group">
+                            <label>Length (ft)</label>
+                            <input type="number" id="area-length" placeholder="0" step="0.5" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Width (ft)</label>
+                            <input type="number" id="area-width" placeholder="0" step="0.5" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row hidden" id="circle-fields">
+                        <div class="form-group">
+                            <label>Diameter (ft)</label>
+                            <input type="number" id="area-diameter" placeholder="0" step="0.5" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row hidden" id="custom-fields">
+                        <div class="form-group">
+                            <label>Square Footage</label>
+                            <input type="number" id="area-custom-sqft" placeholder="0" step="1" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-accent" onclick="addMeasurementArea()" style="margin-top: 12px;">+ Add Area</button>
+
+                <div class="measurement-areas" id="measurement-areas"></div>
+
+                <div class="total-sqft" id="total-sqft-display" style="display: none;">
+                    <div class="number" id="total-sqft-number">0</div>
+                    <div class="label">Total Square Feet</div>
+                </div>
+
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px; font-style: italic;">
+                    All measurements are approximate — customer acknowledges this in contract.
+                </p>
+
+                <div class="btn-group" style="justify-content: space-between;">
+                    <button class="btn btn-outline" onclick="prevStep(1)">&larr; Back</button>
+                    <button class="btn btn-primary btn-lg" onclick="nextStep(3)">Continue to Color Selection &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== STEP 3: COLOR SELECTION ===== -->
+        <div id="step-3" class="step-content hidden">
+            <div class="card">
+                <div class="section-title">
+                    <div class="step-num">3</div>
+                    <div>
+                        <h2>Pebble Stone Color Selection</h2>
+                        <div class="subtitle">Choose a primary color and optional border</div>
+                    </div>
+                </div>
+
+                <label style="font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Primary Color *</label>
+                <div class="color-grid" id="primary-color-grid"></div>
+
+                <div style="margin-top: 20px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px;">
+                        <input type="checkbox" id="has-border" onchange="toggleBorderColor()"> Add Border Color
+                    </label>
+                </div>
+
+                <div id="border-color-section" class="hidden" style="margin-top: 16px;">
+                    <label style="font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Border Color</label>
+                    <div class="color-grid" id="border-color-grid"></div>
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label>Border Width (inches)</label>
+                        <input type="number" id="border-width" value="10" min="4" max="24" step="1">
+                    </div>
+                </div>
+
+                <div class="btn-group" style="justify-content: space-between;">
+                    <button class="btn btn-outline" onclick="prevStep(2)">&larr; Back</button>
+                    <button class="btn btn-primary btn-lg" onclick="nextStep(4)">Continue to Pricing &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== STEP 4: AUTO-PRICING ===== -->
+        <div id="step-4" class="step-content hidden">
+            <div class="card">
+                <div class="section-title">
+                    <div class="step-num">4</div>
+                    <div>
+                        <h2>Auto-Pricing</h2>
+                        <div class="subtitle">System-calculated quote based on measurements and surface type</div>
+                    </div>
+                </div>
+
+                <div class="approval-summary">
+                    <div class="approval-row">
+                        <span class="label">Surface Type</span>
+                        <span class="value" id="price-surface-type">—</span>
+                    </div>
+                    <div class="approval-row">
+                        <span class="label">Total Square Footage</span>
+                        <span class="value" id="price-sqft">—</span>
+                    </div>
+                    <div class="approval-row">
+                        <span class="label">Rate per Sq Ft</span>
+                        <span class="value" id="price-rate">—</span>
+                    </div>
+                </div>
+
+                <!-- Discount Section -->
+                <div class="discount-section">
+                    <label style="font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Apply Discount (optional)</label>
+                    <div class="discount-row">
+                        <input type="number" id="discount-value" placeholder="0" min="0" oninput="recalcPrice()">
+                        <select id="discount-type" onchange="recalcPrice()">
+                            <option value="percent">% Off</option>
+                            <option value="dollar">$ Off</option>
+                        </select>
+                        <input type="text" id="discount-name" placeholder="e.g., Spring Promo" style="flex: 1; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 14px;">
+                    </div>
+                    <div id="discount-cap-warning" class="discount-cap-warning hidden">
+                        Max 15% discount for Rep role. Manager approval required for higher discounts.
+                    </div>
+                </div>
+
+                <div id="min-price-warning" class="min-price-warning hidden">
+                    Minimum job price of $500 applied. Original calculation was below threshold.
+                </div>
+
+                <div class="price-breakdown" id="price-breakdown">
+                    <div class="price-row">
+                        <span>Subtotal</span>
+                        <span id="price-subtotal">$0.00</span>
+                    </div>
+                    <div class="price-row" id="price-discount-row" style="display: none;">
+                        <span id="price-discount-label">Discount</span>
+                        <span id="price-discount-amount">-$0.00</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Grand Total</span>
+                        <span id="price-total">$0.00</span>
+                    </div>
+                    <div class="price-row deposit">
+                        <span>40% Deposit Due at Signing</span>
+                        <span id="price-deposit">$0.00</span>
+                    </div>
+                    <div class="price-row balance">
+                        <span>Balance Due on Completion</span>
+                        <span id="price-balance">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="btn-group" style="justify-content: space-between;">
+                    <button class="btn btn-outline" onclick="prevStep(3)">&larr; Back</button>
+                    <button class="btn btn-primary btn-lg" onclick="nextStep(5)">Generate Bid &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== STEP 5: BID / ESTIMATE ===== -->
+        <div id="step-5" class="step-content hidden">
+            <div class="card">
+                <div class="section-title">
+                    <div class="step-num">5</div>
+                    <div>
+                        <h2>Professional Bid / Estimate</h2>
+                        <div class="subtitle">Review the generated bid document</div>
+                    </div>
+                </div>
+
+                <div class="bid-preview" id="bid-preview">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="btn-group" style="justify-content: space-between;">
+                    <button class="btn btn-outline" onclick="prevStep(4)">&larr; Back</button>
+                    <button class="btn btn-accent btn-lg" onclick="downloadBidPDF()">Download PDF</button>
+                    <button class="btn btn-primary btn-lg" onclick="nextStep(6)">Continue to Approval &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== STEP 6: REP APPROVAL ===== -->
+        <div id="step-6" class="step-content hidden">
+            <div class="card">
+                <div class="section-title">
+                    <div class="step-num">6</div>
+                    <div>
+                        <h2>Rep Approval Gate</h2>
+                        <div class="subtitle">Verify all information before sending to customer</div>
+                    </div>
+                </div>
+
+                <div class="approval-summary" id="approval-summary">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 14px;">
+                        <input type="checkbox" id="rep-confirm" style="margin-top: 3px;" onchange="toggleApproveBtn()">
+                        <span>I have verified all customer information, property address, surface type, square footage, color selection, and calculated price. I approve sending this estimate and contract to the customer.</span>
+                    </label>
+                </div>
+
+                <div class="btn-group" style="justify-content: space-between;">
+                    <button class="btn btn-outline" onclick="prevStep(5)">&larr; Back</button>
+                    <button class="btn btn-accent btn-lg" id="approve-send-btn" onclick="approveAndSend()" disabled>
+                        Approve & Send via DocuSign
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== STEP 7: DOCUSIGN + STRIPE ===== -->
+        <div id="step-7" class="step-content hidden">
+            <div class="card">
+                <div class="section-title">
+                    <div class="step-num">7</div>
+                    <div>
+                        <h2>Contract & Payment</h2>
+                        <div class="subtitle">DocuSign contract sent — awaiting customer signature and deposit</div>
+                    </div>
+                </div>
+
+                <div id="docusign-status">
+                    <div class="integration-status">
+                        <div class="status-animation"></div>
+                        <h3>Sending Contract via DocuSign...</h3>
+                        <p>Generating contract PDF and creating DocuSign envelope</p>
+                    </div>
+                </div>
+
+                <div id="docusign-sent" class="hidden">
+                    <div class="integration-status">
+                        <div class="success-check">&#10003;</div>
+                        <h3>Contract Sent Successfully</h3>
+                        <p id="docusign-sent-email">Sent to customer@email.com</p>
+                    </div>
+
+                    <div class="approval-summary" style="margin-top: 20px;">
+                        <div class="approval-row">
+                            <span class="label">Job UUID</span>
+                            <span class="value" id="final-job-uuid">—</span>
+                        </div>
+                        <div class="approval-row">
+                            <span class="label">DocuSign Envelope ID</span>
+                            <span class="value" id="envelope-id">—</span>
+                        </div>
+                        <div class="approval-row">
+                            <span class="label">Contract Status</span>
+                            <span class="value"><span class="badge badge-warning">Awaiting Signature</span></span>
+                        </div>
+                        <div class="approval-row">
+                            <span class="label">Payment Status</span>
+                            <span class="value"><span class="badge badge-warning">Deposit Pending</span></span>
+                        </div>
+                        <div class="approval-row">
+                            <span class="label">Estimate #</span>
+                            <span class="value" id="final-est-number">—</span>
+                        </div>
+                        <div class="approval-row">
+                            <span class="label">Grand Total</span>
+                            <span class="value" id="final-total">—</span>
+                        </div>
+                        <div class="approval-row">
+                            <span class="label">40% Deposit</span>
+                            <span class="value" id="final-deposit">—</span>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px; text-align: center;">
+                        Customer will receive a DocuSign email with the contract and Stripe payment link for the 40% deposit.
+                    </p>
+                </div>
+
+                <div class="btn-group" style="justify-content: center; margin-top: 24px;">
+                    <button class="btn btn-primary btn-lg" onclick="startNewJob()">Start New Estimate</button>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /container -->
+</div><!-- /app-screen -->
+
+<!-- ===== HTML2PDF Library ===== -->
+<!-- TODO: Bundle locally for production — CDN is a demo-day risk -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+// ===================================================================
+// 3 T's Engineering.AI — Pebble Stone Epoxy Automation Platform
+// v2.2 — Post Wrecking Ball Round 3
+// Single-page PWA: estimate-to-contract pipeline
+// ===================================================================
+
+// ===== CONFIGURATION =====
+var CONFIG = {
+    // API endpoints — replace with real credentials during build
+    GOOGLE_MAPS_API_KEY: 'AIzaSyATUuvgEDXRHu7mrE-WdeMm8OranA0CUM8',
+    APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycby7qvCdZs7mK3xsljULkDwvvE3GplYFbJ_58x4me74RKZXVmsjaWSNvrdeTWA92dhlPDw/exec',
+    APPS_SCRIPT_API_KEY: '3ts-demo-2026',
+    GOOGLE_SHEETS_ID: '1G1jUM6dMiXTHZ11oHzxQ2WaG4uTXFmvF5zSC_FO83V0',
+    STRIPE_PUBLISHABLE_KEY: 'pk_test_51TIjbM0SEpewdBUlgFOsOTL2ZJoRxT31sGpy1GhH9PzfFYlFfP1mrDEsthRZlmgLF6Diq571DKR9YhzQ2JGMDctD00dRTk4suf',
+
+    MIN_JOB_PRICE: 500,
+    DEPOSIT_PERCENT: 0.40,
+    MAX_DISCOUNT_REP: 15,       // Max discount % for Rep role
+    ESTIMATE_VALID_DAYS: 30,
+    WALKAWAY_FEE: 350,
+    CANCEL_FEE: 500,
+    CANCEL_NOTICE_DAYS: 14,
+
+    // Default pricing per sq ft — overridden by Config tab fetch on success
+    RATES: {
+        'driveway':   18.00,
+        'patio':      16.00,
+        'pool-deck':  20.00,
+        'garage':     15.00,
+        'porch':      17.00,
+        'sidewalk':   16.00,
+        'basement':   14.00,
+        'sunroom':    16.00,
+        'commercial': 13.00
+    },
+
+    SURFACE_LABELS: {
+        'driveway': 'Driveway',
+        'patio': 'Patio',
+        'pool-deck': 'Pool Deck',
+        'garage': 'Garage Floor',
+        'porch': 'Porch / Entranceway',
+        'sidewalk': 'Sidewalk',
+        'basement': 'Basement',
+        'sunroom': 'Sunroom',
+        'commercial': 'Commercial'
+    },
+
+    DEMO_USERS: {
+        'admin': { password: '3ts2026', name: 'Ken Talley', role: 'Admin' },
+        'kevin': { password: 'demo', name: 'Kevin Meuret', role: 'Manager' },
+        'rep':   { password: 'demo', name: 'Field Rep', role: 'Rep' }
+    }
+};
+
+// ===== PEBBLE STONE COLORS (12 industry-standard names) =====
+var STONE_COLORS = [
+    { id: 'autumn-blend',   name: 'Autumn Blend',   hex: '#b5651d', gradient: 'linear-gradient(135deg, #b5651d, #8B4513)' },
+    { id: 'desert-sand',    name: 'Desert Sand',    hex: '#EDC9AF', gradient: 'linear-gradient(135deg, #EDC9AF, #D2B48C)' },
+    { id: 'coastal-grey',   name: 'Coastal Grey',   hex: '#8B9DAF', gradient: 'linear-gradient(135deg, #8B9DAF, #6B7D8F)' },
+    { id: 'tuscan-stone',   name: 'Tuscan Stone',   hex: '#C4A882', gradient: 'linear-gradient(135deg, #C4A882, #A08060)' },
+    { id: 'midnight-black', name: 'Midnight Black', hex: '#2C2C2C', gradient: 'linear-gradient(135deg, #2C2C2C, #1a1a1a)' },
+    { id: 'sierra-tan',     name: 'Sierra Tan',     hex: '#D2B48C', gradient: 'linear-gradient(135deg, #D2B48C, #B8956A)' },
+    { id: 'coral-reef',     name: 'Coral Reef',     hex: '#E8967D', gradient: 'linear-gradient(135deg, #E8967D, #CD7F5E)' },
+    { id: 'mountain-slate', name: 'Mountain Slate', hex: '#708090', gradient: 'linear-gradient(135deg, #708090, #556B7A)' },
+    { id: 'canyon-brown',   name: 'Canyon Brown',   hex: '#8B4513', gradient: 'linear-gradient(135deg, #8B4513, #6B3410)' },
+    { id: 'pearl-white',    name: 'Pearl White',    hex: '#F5F0E8', gradient: 'linear-gradient(135deg, #F5F0E8, #E8E0D0)' },
+    { id: 'forest-green',   name: 'Forest Green',   hex: '#4A6741', gradient: 'linear-gradient(135deg, #4A6741, #355E3B)' },
+    { id: 'river-rock',     name: 'River Rock',     hex: '#A0937D', gradient: 'linear-gradient(135deg, #A0937D, #887860)' }
+];
+
+// ===== APP STATE =====
+var state = {
+    currentStep: 1,
+    totalSteps: 7,
+    jobUUID: '',
+    user: null,
+    customer: {},
+    measurements: [],
+    totalSqFt: 0,
+    primaryColor: null,
+    borderColor: null,
+    hasBorder: false,
+    borderWidth: 10,
+    projectType: '',
+    subtotal: 0,
+    discountValue: 0,
+    discountType: 'percent',
+    discountName: '',
+    discount: 0,
+    grandTotal: 0,
+    deposit: 0,
+    balance: 0,
+    estimateNumber: '',
+    notes: ''
+};
+
+// ===== STEP DEFINITIONS (7 steps) =====
+var STEPS = [
+    { num: 1, label: 'Intake' },
+    { num: 2, label: 'Measure' },
+    { num: 3, label: 'Color' },
+    { num: 4, label: 'Price' },
+    { num: 5, label: 'Bid' },
+    { num: 6, label: 'Approve' },
+    { num: 7, label: 'Send' }
+];
+
+// ===== iOS DETECTION =====
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+// ===== INITIALIZATION =====
+function init() {
+    renderStepIndicator();
+    renderColorGrids();
+    setupPhoneFormatting();
+    renderMMPBanner();
+    fetchConfigRates();
+}
+
+function renderStepIndicator() {
+    var container = document.getElementById('step-indicator');
+    container.innerHTML = STEPS.map(function(s) {
+        return '<div class="step-item">' +
+            '<div class="step-dot ' + (s.num === state.currentStep ? 'active' : '') + ' ' + (s.num < state.currentStep ? 'completed' : '') + '" id="dot-' + s.num + '">' +
+                (s.num < state.currentStep ? '&#10003;' : s.num) +
+            '</div>' +
+            '<div class="step-label">' + s.label + '</div>' +
+        '</div>';
+    }).join('');
+}
+
+function renderColorGrids() {
+    var primaryGrid = document.getElementById('primary-color-grid');
+    var borderGrid = document.getElementById('border-color-grid');
+
+    var renderGrid = function(container, type) {
+        container.innerHTML = STONE_COLORS.map(function(c) {
+            return '<div class="color-swatch" style="background: ' + c.gradient + ';" data-color-id="' + c.id + '" onclick="selectColor(\'' + type + '\', \'' + c.id + '\')">' + c.name + '</div>';
+        }).join('');
+    };
+
+    renderGrid(primaryGrid, 'primary');
+    renderGrid(borderGrid, 'border');
+}
+
+function renderMMPBanner() {
+    var container = document.getElementById('mmp-banner-container');
+    if (isIOS()) {
+        container.innerHTML =
+            '<a href="measuremappro://" id="mmp-link" class="mmp-banner" style="text-decoration: none;">' +
+                '<div class="mmp-icon">&#x1F4D0;</div>' +
+                '<div class="mmp-text">' +
+                    '<h4>Open Measure Map Pro</h4>' +
+                    '<p>Measure on-site, then enter the result below</p>' +
+                '</div>' +
+            '</a>' +
+            '<p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">' +
+                'Don\'t have it? <a href="https://apps.apple.com/app/measure-map-pro/id329606492" target="_blank" style="color: var(--primary);">Install from App Store</a>' +
+            '</p>';
+    }
+}
+
+function setupPhoneFormatting() {
+    document.getElementById('cust-phone').addEventListener('input', function(e) {
+        var val = e.target.value.replace(/\D/g, '');
+        if (val.length >= 10) {
+            val = '(' + val.slice(0,3) + ') ' + val.slice(3,6) + '-' + val.slice(6,10);
+        }
+        e.target.value = val;
+    });
+}
+
+// ===== CONFIG FETCH (Apps Script) =====
+async function fetchConfigRates() {
+    if (!CONFIG.APPS_SCRIPT_URL) {
+        console.warn('Apps Script URL not configured — using hardcoded default rates.');
+        return;
+    }
+    try {
+        var resp = await fetch(CONFIG.APPS_SCRIPT_URL, {
+            method: 'POST',
+            redirect: 'follow',
+            body: JSON.stringify({ action: 'getConfig', apiKey: CONFIG.APPS_SCRIPT_API_KEY })
+        });
+        var data = await resp.json();
+        if (data.success && data.rates) {
+            Object.assign(CONFIG.RATES, data.rates);
+            console.log('Config rates loaded from Sheets:', CONFIG.RATES);
+        }
+    } catch (err) {
+        console.warn('Config fetch failed — using hardcoded defaults:', err.message);
+    }
+}
+
+// ===== JOB UUID =====
+function generateJobUUID() {
+    var now = new Date();
+    var dateStr = now.getFullYear().toString() +
+        (now.getMonth() + 1).toString().padStart(2, '0') +
+        now.getDate().toString().padStart(2, '0');
+    var hex = Math.random().toString(16).substring(2, 8);
+    state.jobUUID = 'JOB-' + dateStr + '-' + hex;
+    document.getElementById('job-uuid-display').textContent = state.jobUUID;
+}
+
+function generateEstimateNumber() {
+    var now = new Date();
+    var dateStr = now.getFullYear().toString() +
+        (now.getMonth() + 1).toString().padStart(2, '0') +
+        now.getDate().toString().padStart(2, '0');
+    var seq = Math.floor(Math.random() * 999).toString().padStart(3, '0');
+    state.estimateNumber = 'EST-' + dateStr + '-' + seq;
+}
+
+// ===== LOGIN =====
+function handleLogin() {
+    var user = document.getElementById('login-user').value.toLowerCase().trim();
+    var pass = document.getElementById('login-pass').value;
+
+    if (CONFIG.DEMO_USERS[user] && CONFIG.DEMO_USERS[user].password === pass) {
+        state.user = Object.assign({}, CONFIG.DEMO_USERS[user], { username: user });
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('app-screen').classList.remove('hidden');
+        document.getElementById('user-display').textContent = state.user.name;
+        document.getElementById('role-display').textContent = state.user.role;
+        document.getElementById('user-avatar').textContent = state.user.name.charAt(0);
+        generateJobUUID();
+        generateEstimateNumber();
+
+        logAction('login', 'User logged in');
+
+        // Warmup Apps Script (mitigates cold start)
+        if (CONFIG.APPS_SCRIPT_URL) {
+            fetch(CONFIG.APPS_SCRIPT_URL, {
+                method: 'POST',
+                redirect: 'follow',
+                body: JSON.stringify({ action: 'getConfig', apiKey: CONFIG.APPS_SCRIPT_API_KEY })
+            }).catch(function() {});
+        }
+    } else {
+        document.getElementById('login-error').classList.remove('hidden');
+    }
+}
+
+function handleLogout() {
+    state.user = null;
+    document.getElementById('app-screen').classList.add('hidden');
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('login-user').value = '';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-error').classList.add('hidden');
+}
+
+// Enter key triggers login
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !document.getElementById('login-screen').classList.contains('hidden')) {
+        handleLogin();
+    }
+});
+
+// ===== NAVIGATION =====
+function nextStep(step) {
+    if (state.currentStep === 1 && !validateIntake()) return;
+    if (state.currentStep === 2 && state.measurements.length === 0) {
+        alert('Please add at least one measurement area.');
+        return;
+    }
+    if (state.currentStep === 3 && !state.primaryColor) {
+        alert('Please select a primary color.');
+        return;
+    }
+
+    if (state.currentStep === 1) captureIntake();
+    if (step === 4) calculatePricing();
+    if (step === 5) generateBidPreview();
+    if (step === 6) generateApprovalSummary();
+
+    document.getElementById('step-' + state.currentStep).classList.add('hidden');
+    state.currentStep = step;
+    document.getElementById('step-' + state.currentStep).classList.remove('hidden');
+    renderStepIndicator();
+    window.scrollTo(0, 0);
+}
+
+function prevStep(step) {
+    document.getElementById('step-' + state.currentStep).classList.add('hidden');
+    state.currentStep = step;
+    document.getElementById('step-' + state.currentStep).classList.remove('hidden');
+    renderStepIndicator();
+    window.scrollTo(0, 0);
+}
+
+// ===== STEP 1: INTAKE VALIDATION =====
+function validateIntake() {
+    var required = ['cust-first', 'cust-last', 'cust-address', 'cust-email', 'cust-phone'];
+    var valid = true;
+    required.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el.value.trim()) {
+            el.style.borderColor = '#e74c3c';
+            valid = false;
+        } else {
+            el.style.borderColor = '';
+        }
+    });
+    if (!document.getElementById('project-type').value) {
+        document.getElementById('project-type').style.borderColor = '#e74c3c';
+        valid = false;
+    } else {
+        document.getElementById('project-type').style.borderColor = '';
+    }
+    if (!valid) alert('Please fill in all required fields.');
+    return valid;
+}
+
+function captureIntake() {
+    state.customer = {
+        firstName: document.getElementById('cust-first').value.trim(),
+        lastName: document.getElementById('cust-last').value.trim(),
+        address: document.getElementById('cust-address').value.trim(),
+        city: document.getElementById('cust-city').value.trim(),
+        state: document.getElementById('cust-state').value.trim(),
+        zip: document.getElementById('cust-zip').value.trim(),
+        email: document.getElementById('cust-email').value.trim(),
+        phone: document.getElementById('cust-phone').value.trim()
+    };
+    state.projectType = document.getElementById('project-type').value;
+    state.notes = document.getElementById('cust-notes').value.trim();
+}
+
+// ===== STEP 2: MEASUREMENT =====
+function updateShapeFields() {
+    var shape = document.getElementById('area-shape').value;
+    document.getElementById('rect-fields').classList.toggle('hidden', shape !== 'rectangle');
+    document.getElementById('circle-fields').classList.toggle('hidden', shape !== 'circle');
+    document.getElementById('custom-fields').classList.toggle('hidden', shape !== 'custom');
+}
+
+function addMeasurementArea() {
+    var name = document.getElementById('area-name').value.trim() || ('Area ' + (state.measurements.length + 1));
+    var shape = document.getElementById('area-shape').value;
+    var sqft = 0;
+
+    if (shape === 'rectangle') {
+        var l = parseFloat(document.getElementById('area-length').value) || 0;
+        var w = parseFloat(document.getElementById('area-width').value) || 0;
+        sqft = l * w;
+    } else if (shape === 'circle') {
+        var d = parseFloat(document.getElementById('area-diameter').value) || 0;
+        sqft = Math.PI * Math.pow(d / 2, 2);
+    } else {
+        sqft = parseFloat(document.getElementById('area-custom-sqft').value) || 0;
+    }
+
+    if (sqft <= 0) {
+        alert('Please enter valid dimensions.');
+        return;
+    }
+
+    sqft = Math.round(sqft);
+    state.measurements.push({ name: name, shape: shape, sqft: sqft });
+    state.totalSqFt = state.measurements.reduce(function(sum, m) { return sum + m.sqft; }, 0);
+
+    renderMeasurements();
+    clearMeasurementInputs();
+}
+
+function removeMeasurement(index) {
+    state.measurements.splice(index, 1);
+    state.totalSqFt = state.measurements.reduce(function(sum, m) { return sum + m.sqft; }, 0);
+    renderMeasurements();
+}
+
+function renderMeasurements() {
+    var container = document.getElementById('measurement-areas');
+    container.innerHTML = state.measurements.map(function(m, i) {
+        return '<div class="area-item">' +
+            '<span class="area-label">' + m.name + '</span>' +
+            '<span class="area-sqft">' + m.sqft + ' sq ft</span>' +
+            '<button class="remove-area" onclick="removeMeasurement(' + i + ')">&#x2715;</button>' +
+            '</div>';
+    }).join('');
+
+    var totalDisplay = document.getElementById('total-sqft-display');
+    if (state.measurements.length > 0) {
+        totalDisplay.style.display = 'block';
+        document.getElementById('total-sqft-number').textContent = state.totalSqFt.toLocaleString();
+    } else {
+        totalDisplay.style.display = 'none';
+    }
+}
+
+function clearMeasurementInputs() {
+    document.getElementById('area-name').value = '';
+    document.getElementById('area-length').value = '';
+    document.getElementById('area-width').value = '';
+    document.getElementById('area-diameter').value = '';
+    document.getElementById('area-custom-sqft').value = '';
+}
+
+// ===== STEP 3: COLOR SELECTION =====
+function selectColor(type, colorId) {
+    var gridId = type === 'primary' ? 'primary-color-grid' : 'border-color-grid';
+    document.querySelectorAll('#' + gridId + ' .color-swatch').forEach(function(s) { s.classList.remove('selected'); });
+    document.querySelector('#' + gridId + ' [data-color-id="' + colorId + '"]').classList.add('selected');
+
+    if (type === 'primary') {
+        state.primaryColor = STONE_COLORS.find(function(c) { return c.id === colorId; });
+    } else {
+        state.borderColor = STONE_COLORS.find(function(c) { return c.id === colorId; });
+    }
+}
+
+function toggleBorderColor() {
+    state.hasBorder = document.getElementById('has-border').checked;
+    document.getElementById('border-color-section').classList.toggle('hidden', !state.hasBorder);
+}
+
+// ===== STEP 4: PRICING =====
+function calculatePricing() {
+    var rate = CONFIG.RATES[state.projectType] || 15;
+    state.subtotal = state.totalSqFt * rate;
+    recalcPrice();
+
+    document.getElementById('price-surface-type').textContent = CONFIG.SURFACE_LABELS[state.projectType] || state.projectType;
+    document.getElementById('price-sqft').textContent = state.totalSqFt.toLocaleString() + ' sq ft';
+    document.getElementById('price-rate').textContent = '$' + rate.toFixed(2) + '/sq ft';
+}
+
+function recalcPrice() {
+    var rate = CONFIG.RATES[state.projectType] || 15;
+    state.subtotal = state.totalSqFt * rate;
+
+    var discountVal = parseFloat(document.getElementById('discount-value').value) || 0;
+    var discountType = document.getElementById('discount-type').value;
+    state.discountName = document.getElementById('discount-name').value || '';
+    state.discountType = discountType;
+    state.discountValue = discountVal;
+
+    // Enforce 15% cap for Rep role
+    var capWarning = document.getElementById('discount-cap-warning');
+    if (state.user && state.user.role === 'Rep' && discountType === 'percent' && discountVal > CONFIG.MAX_DISCOUNT_REP) {
+        discountVal = CONFIG.MAX_DISCOUNT_REP;
+        document.getElementById('discount-value').value = CONFIG.MAX_DISCOUNT_REP;
+        capWarning.classList.remove('hidden');
+    } else if (state.user && state.user.role === 'Rep' && discountType === 'dollar') {
+        var maxDollar = state.subtotal * (CONFIG.MAX_DISCOUNT_REP / 100);
+        if (discountVal > maxDollar) {
+            discountVal = maxDollar;
+            document.getElementById('discount-value').value = maxDollar.toFixed(2);
+            capWarning.classList.remove('hidden');
+        } else {
+            capWarning.classList.add('hidden');
+        }
+    } else {
+        capWarning.classList.add('hidden');
+    }
+
+    if (discountType === 'percent') {
+        state.discount = state.subtotal * (discountVal / 100);
+    } else {
+        state.discount = discountVal;
+    }
+
+    var total = state.subtotal - state.discount;
+
+    // Enforce $500 minimum
+    var belowMin = total < CONFIG.MIN_JOB_PRICE && state.totalSqFt > 0;
+    if (belowMin) total = CONFIG.MIN_JOB_PRICE;
+
+    // Block discounts that push below $500
+    if (state.discount > 0 && total <= CONFIG.MIN_JOB_PRICE && state.subtotal > CONFIG.MIN_JOB_PRICE) {
+        state.discount = state.subtotal - CONFIG.MIN_JOB_PRICE;
+        total = CONFIG.MIN_JOB_PRICE;
+    }
+
+    state.grandTotal = total;
+    state.deposit = total * CONFIG.DEPOSIT_PERCENT;
+    state.balance = total - state.deposit;
+
+    // Update UI
+    document.getElementById('min-price-warning').classList.toggle('hidden', !belowMin);
+    document.getElementById('price-subtotal').textContent = formatCurrency(state.subtotal);
+
+    if (state.discount > 0) {
+        document.getElementById('price-discount-row').style.display = 'flex';
+        document.getElementById('price-discount-label').textContent = state.discountName || 'Discount';
+        document.getElementById('price-discount-amount').textContent = '-' + formatCurrency(state.discount);
+    } else {
+        document.getElementById('price-discount-row').style.display = 'none';
+    }
+
+    document.getElementById('price-total').textContent = formatCurrency(state.grandTotal);
+    document.getElementById('price-deposit').textContent = formatCurrency(state.deposit);
+    document.getElementById('price-balance').textContent = formatCurrency(state.balance);
+}
+
+// ===== STEP 5: BID PREVIEW =====
+function generateBidPreview() {
+    var today = new Date();
+    var expiryDate = new Date(today);
+    expiryDate.setDate(expiryDate.getDate() + CONFIG.ESTIMATE_VALID_DAYS);
+
+    var fullAddress = [state.customer.address, state.customer.city, state.customer.state, state.customer.zip].filter(Boolean).join(', ');
+
+    var processSteps = [
+        'Diamond Profile for Permanent Adhesion',
+        'Diamond Profile Cracks and Imperfections to Prepare for Mender Application',
+        'Apply 2 Part Mender Crack and Pit Repair & Diamond Profile Smooth',
+        'Apply Polyurea Basecoat Evenly to Surface',
+        'Broadcast Generous Amounts of Acrylic Chip',
+        'Remove Excess Media Broadcast by Scraping',
+        'Apply Polyaspartic Top Coat'
+    ];
+
+    var borderWidth = document.getElementById('border-width') ? document.getElementById('border-width').value : 10;
+
+    var preview = document.getElementById('bid-preview');
+    preview.innerHTML =
+        '<div class="bid-header">' +
+            '<div>' +
+                '<div class="company">3 T\'s Engineering.AI</div>' +
+                '<div style="font-size: 12px; color: #666;">Pebble Stone Epoxy Concrete Resurfacing</div>' +
+                '<div style="font-size: 11px; color: #888; margin-top: 4px;">www.3tsengineering.com</div>' +
+            '</div>' +
+            '<div style="text-align: right;">' +
+                '<div class="doc-type">ESTIMATE</div>' +
+                '<div style="font-size: 13px;"><strong>No.</strong> ' + state.estimateNumber + '</div>' +
+                '<div style="font-size: 13px;"><strong>Date:</strong> ' + formatDate(today) + '</div>' +
+                '<div style="font-size: 12px; color: #888; margin-top: 4px;">' + state.jobUUID + '</div>' +
+            '</div>' +
+        '</div>' +
+
+        '<div class="bid-info-grid">' +
+            '<div>' +
+                '<div class="label">Prepared For:</div>' +
+                '<div class="value">' + state.customer.firstName + ' ' + state.customer.lastName + '</div>' +
+                '<div style="font-size: 12px;">' + fullAddress + '</div>' +
+                '<div style="font-size: 12px;">' + state.customer.email + '</div>' +
+                '<div style="font-size: 12px;">' + state.customer.phone + '</div>' +
+            '</div>' +
+            '<div>' +
+                '<div class="label">Prepared By:</div>' +
+                '<div class="value">' + (state.user ? state.user.name : 'Field Rep') + '</div>' +
+                '<div style="font-size: 12px;">3 T\'s Engineering.AI</div>' +
+                '<div style="font-size: 12px;">ken@3tsengineering.com</div>' +
+            '</div>' +
+        '</div>' +
+
+        '<div class="bid-section">' +
+            '<div class="bid-section-header">PEBBLE STONE COATING — 7-STEP PROCESS</div>' +
+            '<div class="bid-section-body">' +
+                '<table class="bid-table">' +
+                    processSteps.map(function(step) {
+                        return '<tr><td>' + step + '</td><td class="right" style="color: #27ae60; font-weight: 600;">&#10003; Included</td></tr>';
+                    }).join('') +
+                '</table>' +
+            '</div>' +
+        '</div>' +
+
+        '<div class="bid-section">' +
+            '<div class="bid-section-header">PROJECT DETAILS</div>' +
+            '<div class="bid-section-body">' +
+                '<table class="bid-table">' +
+                    '<tr><td>Area</td><td class="right">' + CONFIG.SURFACE_LABELS[state.projectType] + '</td></tr>' +
+                    '<tr><td>Total Square Footage</td><td class="right">' + state.totalSqFt.toLocaleString() + ' sq ft</td></tr>' +
+                    '<tr><td>Primary Color</td><td class="right">' + (state.primaryColor ? state.primaryColor.name : 'TBD') + '</td></tr>' +
+                    (state.hasBorder ?
+                        '<tr><td>Border Color</td><td class="right">' + (state.borderColor ? state.borderColor.name : 'TBD') + '</td></tr>' +
+                        '<tr><td>Border Width</td><td class="right">' + borderWidth + ' inches</td></tr>' : '') +
+                    '<tr><td>Warranty</td><td class="right">Residential Limited Lifetime Warranty</td></tr>' +
+                '</table>' +
+                (state.measurements.length > 1 ?
+                    '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee;">' +
+                        '<div style="font-size: 12px; font-weight: 600; margin-bottom: 6px;">Measurement Breakdown:</div>' +
+                        state.measurements.map(function(m) {
+                            return '<div style="font-size: 12px; display: flex; justify-content: space-between;"><span>' + m.name + '</span><span>' + m.sqft + ' sq ft</span></div>';
+                        }).join('') +
+                    '</div>' : '') +
+            '</div>' +
+        '</div>' +
+
+        '<div class="bid-section">' +
+            '<div class="bid-section-header">PRICING</div>' +
+            '<div class="bid-section-body">' +
+                '<table class="bid-table">' +
+                    '<tr><td>Subtotal (' + state.totalSqFt + ' sq ft &times; $' + (CONFIG.RATES[state.projectType] || 15).toFixed(2) + '/sq ft)</td><td class="right">' + formatCurrency(state.subtotal) + '</td></tr>' +
+                    (state.discount > 0 ? '<tr><td>' + (state.discountName || 'Discount') + '</td><td class="right" style="color: #e74c3c;">-' + formatCurrency(state.discount) + '</td></tr>' : '') +
+                    '<tr class="total-row"><td><strong>Grand Total</strong></td><td class="right"><strong>' + formatCurrency(state.grandTotal) + '</strong></td></tr>' +
+                    '<tr><td>40% Deposit Due at Signing</td><td class="right" style="font-weight: 600;">' + formatCurrency(state.deposit) + '</td></tr>' +
+                    '<tr><td>Balance Due on Completion</td><td class="right">' + formatCurrency(state.balance) + '</td></tr>' +
+                '</table>' +
+                '<div style="margin-top: 10px; font-size: 11px; color: #888;">' +
+                    'All promos and discounts have been applied.<br>' +
+                    'Payment due in full at completion of project.<br>' +
+                    'Projects cancelled/rescheduled without ' + CONFIG.CANCEL_NOTICE_DAYS + '-day notice will be charged $' + CONFIG.CANCEL_FEE + ' and will not be rescheduled until paid.' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+
+        '<div class="bid-section">' +
+            '<div class="bid-section-header">WARRANTY DOES NOT COVER</div>' +
+            '<div class="bid-section-body" style="font-size: 12px; color: #666;">' +
+                'Cracking, Crumbling, Iron Oxide Penetration, Hydro Static Water Pressure, Corrosive Liquids or Solids — Not Warranted.' +
+            '</div>' +
+        '</div>' +
+
+        '<div class="bid-expiry">' +
+            'This estimate is valid for ' + CONFIG.ESTIMATE_VALID_DAYS + ' days — Expires ' + formatDate(expiryDate) +
+        '</div>' +
+
+        '<div class="bid-disclaimer">' +
+            '<strong>DISCLAIMERS — Please initial next to each statement:</strong><br><br>' +
+            '___ We do not change the pitch of the concrete or level it in any circumstance.<br><br>' +
+            '___ We do not prevent lime/calcium/mineral deposit or rust from (re)surfacing.<br><br>' +
+            '___ A walkaway/mobilization fee of $' + CONFIG.WALKAWAY_FEE + '.00 applies if a crew cannot perform the scope of work.<br><br>' +
+            '___ We do not repair or mend any vertical surface or stem walls.<br><br>' +
+            '___ We do not coat, repair, or mend any control/expansion joints as they are considered industry standard structural members of the substrate.<br><br>' +
+            '___ I agree that the payment method used for my deposit payment may be securely kept on file to process the final payment for the remaining balance due immediately upon job completion.' +
+        '</div>' +
+
+        '<div class="bid-disclaimer">' +
+            '<strong>**Disclaimer**</strong><br>' +
+            'Any and all hard surface flooring should be considered slippery when wet. Always use caution and common sense.<br><br>' +
+            '<strong>SUBSTRATE FAILURE / CRACK REPAIR</strong><br>' +
+            'A proprietary concrete mender system is used to fill/repair existing cracks. However, future settling, stress, expansion, and contraction can cause cracks to return. Customer acknowledges that substrate failure (including cracks) is NOT COVERED BY THE WARRANTY.<br><br>' +
+            '<strong>MOISTURE STOP DISCLAIMER</strong><br>' +
+            'Some projects require special chemical preparation related to moisture. In the event of unforeseen moisture, customer will be notified of any additional cost.<br><br>' +
+            '<strong>START DATES</strong><br>' +
+            'We do not expressly state or imply job start or duration dates. Most installs are weather permitting and may be moved to accommodate.<br><br>' +
+            '<strong>OBSTRUCTION REMOVAL</strong><br>' +
+            'It is the responsibility of the CUSTOMER to remove any obstructions from the working area prior to the scheduled date of installation. Failure to remove all obstructions may cause delays and is subject to additional charges.<br><br>' +
+            'It is the responsibility of the homeowner or property manager to remove all personal items from the project area. We are grinding concrete with metal diamond blades which can in some instances create dust depending on the softness of concrete. If you want an area taped off with plastic do so prior to our install.<br><br>' +
+            'Recommended to pressure wash at least two times per year with 40 degree tip. <strong>DO NOT USE MORE THAN 3,000 PSI or a 0 degree tip.</strong>' +
+        '</div>' +
+
+        '<div class="bid-signature-block">' +
+            '<div>' +
+                '<div style="margin-bottom: 30px;">X ___________________________</div>' +
+                '<div class="sig-line">' + state.customer.firstName + ' ' + state.customer.lastName + '</div>' +
+            '</div>' +
+            '<div>' +
+                '<div style="margin-bottom: 30px;">X ___________________________</div>' +
+                '<div class="sig-line">Company Authorized Signature</div>' +
+            '</div>' +
+        '</div>';
+}
+
+// ===== STEP 6: APPROVAL SUMMARY =====
+function generateApprovalSummary() {
+    var container = document.getElementById('approval-summary');
+    var fullAddress = [state.customer.address, state.customer.city, state.customer.state, state.customer.zip].filter(Boolean).join(', ');
+    var borderWidth = document.getElementById('border-width') ? document.getElementById('border-width').value : 10;
+
+    container.innerHTML =
+        '<div class="approval-row"><span class="label">Job UUID</span><span class="value" style="font-family: monospace; color: var(--accent);">' + state.jobUUID + '</span></div>' +
+        '<div class="approval-row"><span class="label">Customer</span><span class="value">' + state.customer.firstName + ' ' + state.customer.lastName + '</span></div>' +
+        '<div class="approval-row"><span class="label">Address</span><span class="value">' + fullAddress + '</span></div>' +
+        '<div class="approval-row"><span class="label">Email</span><span class="value">' + state.customer.email + '</span></div>' +
+        '<div class="approval-row"><span class="label">Phone</span><span class="value">' + state.customer.phone + '</span></div>' +
+        '<div class="approval-row"><span class="label">Surface Type</span><span class="value">' + CONFIG.SURFACE_LABELS[state.projectType] + '</span></div>' +
+        '<div class="approval-row"><span class="label">Total Sq Ft</span><span class="value">' + state.totalSqFt.toLocaleString() + '</span></div>' +
+        '<div class="approval-row"><span class="label">Primary Color</span><span class="value">' + (state.primaryColor ? state.primaryColor.name : 'TBD') + '</span></div>' +
+        (state.hasBorder ?
+            '<div class="approval-row"><span class="label">Border</span><span class="value">' + (state.borderColor ? state.borderColor.name : 'TBD') + ' (' + borderWidth + 'in)</span></div>' : '') +
+        '<div class="approval-row"><span class="label">Grand Total</span><span class="value" style="color: var(--accent); font-size: 18px;">' + formatCurrency(state.grandTotal) + '</span></div>' +
+        '<div class="approval-row"><span class="label">40% Deposit</span><span class="value">' + formatCurrency(state.deposit) + '</span></div>' +
+        '<div class="approval-row"><span class="label">Estimate #</span><span class="value">' + state.estimateNumber + '</span></div>' +
+        '<div class="approval-row"><span class="label">Rep</span><span class="value">' + (state.user ? state.user.name : '') + ' (' + new Date().toLocaleString() + ')</span></div>';
+}
+
+function toggleApproveBtn() {
+    document.getElementById('approve-send-btn').disabled = !document.getElementById('rep-confirm').checked;
+}
+
+// ===== STEP 7: APPROVE & SEND =====
+async function approveAndSend() {
+    if (!document.getElementById('rep-confirm').checked) return;
+
+    // Disable button immediately to prevent double submission
+    var btn = document.getElementById('approve-send-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    // Build job record
+    var borderWidth = document.getElementById('border-width') ? document.getElementById('border-width').value : 10;
+    var jobRecord = {
+        jobUUID: state.jobUUID,
+        status: 'Approved',
+        created: new Date().toISOString(),
+        rep: state.user ? state.user.username : '',
+        firstName: state.customer.firstName,
+        lastName: state.customer.lastName,
+        address: state.customer.address,
+        city: state.customer.city,
+        state: state.customer.state,
+        zip: state.customer.zip,
+        email: state.customer.email,
+        phone: state.customer.phone,
+        projectType: state.projectType,
+        notes: state.notes,
+        totalSqFt: state.totalSqFt,
+        primaryColor: state.primaryColor ? state.primaryColor.name : '',
+        borderColor: state.hasBorder && state.borderColor ? state.borderColor.name : '',
+        borderWidth: state.hasBorder ? parseInt(borderWidth) : 0,
+        ratePerSqFt: CONFIG.RATES[state.projectType] || 15,
+        subtotal: state.subtotal,
+        discountType: state.discountType,
+        discountValue: state.discountValue,
+        discountLabel: state.discountName,
+        grandTotal: state.grandTotal,
+        depositAmount: state.deposit,
+        balanceDue: state.balance,
+        estimateNumber: state.estimateNumber
+    };
+
+    console.log('JOB RECORD:', jobRecord);
+
+    // Navigate to Step 7 (sending screen)
+    document.getElementById('step-' + state.currentStep).classList.add('hidden');
+    state.currentStep = 7;
+    document.getElementById('step-7').classList.remove('hidden');
+    renderStepIndicator();
+    window.scrollTo(0, 0);
+
+    // Save to Google Sheets via Apps Script
+    if (CONFIG.APPS_SCRIPT_URL) {
+        try {
+            await callAppsScript('saveJob', jobRecord);
+            await callAppsScript('logAction', {
+                jobUUID: state.jobUUID,
+                action: 'approve',
+                user: state.user ? state.user.username : '',
+                details: 'Job approved and sent',
+                status: 'success'
+            });
+        } catch (err) {
+            console.error('Apps Script saveJob failed:', err);
+            callAppsScript('logAction', {
+                jobUUID: state.jobUUID,
+                action: 'approve',
+                user: state.user ? state.user.username : '',
+                details: 'Save failed: ' + err.message,
+                status: 'error'
+            }).catch(function() {});
+        }
+
+        // Create DocuSign envelope
+        try {
+            var pdfBase64 = await generatePDFBase64();
+            var envelopeResult = await callAppsScript('createDocuSignEnvelope', {
+                jobUUID: state.jobUUID,
+                customerEmail: state.customer.email,
+                customerName: state.customer.firstName + ' ' + state.customer.lastName,
+                pdfBase64: pdfBase64,
+                depositAmount: state.deposit,
+                estimateNumber: state.estimateNumber
+            });
+
+            // Create Stripe Checkout Session
+            await callAppsScript('createStripeCheckout', {
+                jobUUID: state.jobUUID,
+                amount: Math.round(state.deposit * 100), // cents
+                customerEmail: state.customer.email,
+                estimateNumber: state.estimateNumber
+            });
+
+            showSendSuccess(envelopeResult);
+        } catch (err) {
+            console.error('DocuSign/Stripe failed:', err);
+            showSendSuccess({ envelopeId: 'ERROR-' + Date.now().toString(36).toUpperCase() });
+        }
+    } else {
+        // Demo mode — simulate sending
+        logAction('approve', 'Job approved (demo mode)');
+        setTimeout(function() {
+            showSendSuccess({ envelopeId: 'ENV-' + Date.now().toString(36).toUpperCase() });
+        }, 2500);
+    }
+}
+
+function showSendSuccess(result) {
+    document.getElementById('docusign-status').classList.add('hidden');
+    document.getElementById('docusign-sent').classList.remove('hidden');
+    document.getElementById('docusign-sent-email').textContent = 'Sent to ' + state.customer.email;
+    document.getElementById('final-job-uuid').textContent = state.jobUUID;
+    document.getElementById('envelope-id').textContent = result.envelopeId || '—';
+    document.getElementById('final-est-number').textContent = state.estimateNumber;
+    document.getElementById('final-total').textContent = formatCurrency(state.grandTotal);
+    document.getElementById('final-deposit').textContent = formatCurrency(state.deposit);
+}
+
+// ===== APPS SCRIPT INTEGRATION =====
+async function callAppsScript(action, data) {
+    if (!CONFIG.APPS_SCRIPT_URL) {
+        console.warn('Apps Script not configured — skipping ' + action);
+        return null;
+    }
+    var payload = Object.assign({}, data || {}, {
+        action: action,
+        apiKey: CONFIG.APPS_SCRIPT_API_KEY
+    });
+    var resp = await fetch(CONFIG.APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+    });
+    return await resp.json();
+}
+
+// ===== AUDIT LOGGING =====
+function logAction(action, details) {
+    var entry = {
+        jobUUID: state.jobUUID,
+        action: action,
+        user: state.user ? state.user.username : '',
+        details: details,
+        status: 'success'
+    };
+    console.log('AUDIT LOG:', entry);
+    if (CONFIG.APPS_SCRIPT_URL) {
+        callAppsScript('logAction', entry).catch(function(err) {
+            console.warn('Audit log failed:', err);
+        });
+    }
+}
+
+// ===== PDF GENERATION =====
+function downloadBidPDF() {
+    var element = document.getElementById('bid-preview');
+    var filename = state.estimateNumber + '_' + state.customer.lastName + '_' + state.customer.firstName + '.pdf';
+
+    var opt = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    html2pdf().set(opt).from(element).save();
+}
+
+async function generatePDFBase64() {
+    var element = document.getElementById('bid-preview');
+    var opt = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        image: { type: 'jpeg', quality: 0.95 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+    var pdf = await html2pdf().set(opt).from(element).outputPdf('datauristring');
+    return pdf.split(',')[1];
+}
+
+// ===== NEW JOB =====
+function startNewJob() {
+    state = {
+        currentStep: 1,
+        totalSteps: 7,
+        jobUUID: '',
+        user: state.user,
+        customer: {},
+        measurements: [],
+        totalSqFt: 0,
+        primaryColor: null,
+        borderColor: null,
+        hasBorder: false,
+        borderWidth: 10,
+        projectType: '',
+        subtotal: 0,
+        discountValue: 0,
+        discountType: 'percent',
+        discountName: '',
+        discount: 0,
+        grandTotal: 0,
+        deposit: 0,
+        balance: 0,
+        estimateNumber: '',
+        notes: ''
+    };
+
+    document.querySelectorAll('input, textarea, select').forEach(function(el) {
+        if (el.type !== 'checkbox') el.value = '';
+        else el.checked = false;
+    });
+    document.querySelectorAll('.color-swatch.selected').forEach(function(c) { c.classList.remove('selected'); });
+    document.getElementById('measurement-areas').innerHTML = '';
+    document.getElementById('total-sqft-display').style.display = 'none';
+    document.getElementById('border-color-section').classList.add('hidden');
+    document.getElementById('approve-send-btn').disabled = true;
+    document.getElementById('approve-send-btn').textContent = 'Approve & Send via DocuSign';
+    document.getElementById('docusign-status').classList.remove('hidden');
+    document.getElementById('docusign-sent').classList.add('hidden');
+    document.getElementById('min-price-warning').classList.add('hidden');
+    document.getElementById('discount-cap-warning').classList.add('hidden');
+    document.getElementById('price-discount-row').style.display = 'none';
+
+    generateJobUUID();
+    generateEstimateNumber();
+
+    document.querySelectorAll('.step-content').forEach(function(s) { s.classList.add('hidden'); });
+    document.getElementById('step-1').classList.remove('hidden');
+    state.currentStep = 1;
+    renderStepIndicator();
+    window.scrollTo(0, 0);
+}
+
+// ===== HELPERS =====
+function formatCurrency(amount) {
+    return '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatDate(date) {
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// ===== GOOGLE MAPS AUTOCOMPLETE =====
+function initGoogleMaps() {
+    if (!CONFIG.GOOGLE_MAPS_API_KEY) return;
+
+    var input = document.getElementById('cust-address');
+    var autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ['address'],
+        componentRestrictions: { country: 'us' }
+    });
+
+    autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        if (place.address_components) {
+            place.address_components.forEach(function(comp) {
+                if (comp.types.includes('locality')) {
+                    document.getElementById('cust-city').value = comp.long_name;
+                }
+                if (comp.types.includes('administrative_area_level_1')) {
+                    document.getElementById('cust-state').value = comp.short_name;
+                }
+                if (comp.types.includes('postal_code')) {
+                    document.getElementById('cust-zip').value = comp.long_name;
+                }
+            });
+        }
+    });
+}
+
+// ===== BOOT =====
+document.addEventListener('DOMContentLoaded', init);
+
+// Load Google Maps if API key is set
+if (CONFIG.GOOGLE_MAPS_API_KEY) {
+    var script = document.createElement('script');
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=' + CONFIG.GOOGLE_MAPS_API_KEY + '&libraries=places&callback=initGoogleMaps';
+    script.async = true;
+    document.head.appendChild(script);
+}
+</script>
+
+</body>
+</html>
