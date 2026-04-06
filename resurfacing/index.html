@@ -1773,6 +1773,17 @@ async function approveAndSend() {
 
     console.log('JOB RECORD:', jobRecord);
 
+    // Generate PDF BEFORE hiding the bid preview (html2pdf needs visible elements)
+    var pdfBase64 = null;
+    if (CONFIG.APPS_SCRIPT_URL) {
+        try {
+            pdfBase64 = await generatePDFBase64();
+            console.log('PDF generated, length: ' + pdfBase64.length);
+        } catch (err) {
+            console.error('PDF generation failed:', err);
+        }
+    }
+
     // Navigate to Step 7 (sending screen)
     document.getElementById('step-' + state.currentStep).classList.add('hidden');
     state.currentStep = 7;
@@ -1802,9 +1813,8 @@ async function approveAndSend() {
             }).catch(function() {});
         }
 
-        // Create DocuSign envelope
+        // Create DocuSign envelope (using pre-generated PDF)
         try {
-            var pdfBase64 = await generatePDFBase64();
             var envelopeResult = await callAppsScript('createDocuSignEnvelope', {
                 jobUUID: state.jobUUID,
                 customerEmail: state.customer.email,
