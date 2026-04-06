@@ -1827,11 +1827,6 @@ async function approveAndSend() {
             stripeCheckoutUrl = (stripeResult && stripeResult.checkoutUrl) || '';
         } catch (stripeErr) {
             console.error('Stripe checkout failed:', stripeErr);
-            alert('Stripe error: ' + stripeErr.message);
-        }
-        if (stripeResult && !stripeResult.checkoutUrl) {
-            console.error('Stripe response missing checkoutUrl:', JSON.stringify(stripeResult));
-            alert('Stripe issue: ' + JSON.stringify(stripeResult));
         }
 
         // Step 2: Create DocuSign envelope with Stripe payment link included in email
