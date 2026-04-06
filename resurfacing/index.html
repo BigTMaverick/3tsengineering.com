@@ -1035,6 +1035,16 @@
                     <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px; text-align: center;">
                         Customer will receive a DocuSign email with the contract. Use the payment link above to collect the 40% deposit via Stripe.
                     </p>
+
+                    <!-- Send Confirmation Email Section -->
+                    <div style="margin-top: 20px; text-align: center; border-top: 1px solid var(--border); padding-top: 20px;">
+                        <button id="send-confirmation-btn" class="btn btn-lg" onclick="sendConfirmationEmail()" style="width: 80%; background: #3b82f6; color: white; border: none;">
+                            Send Signed Contract to Customer
+                        </button>
+                        <p id="confirmation-status" style="color: var(--text-muted); font-size: 13px; margin-top: 8px; text-align: center;">
+                            After customer signs, click above to email them a copy of the signed contract.
+                        </p>
+                    </div>
                 </div>
 
                 <div class="btn-group" style="justify-content: center; margin-top: 24px;">
@@ -1900,6 +1910,51 @@ function copyPaymentLink() {
             btn.textContent = 'Copied!';
             setTimeout(function() { btn.textContent = 'Copy Payment Link for Customer'; }, 2000);
         });
+    }
+}
+
+async function sendConfirmationEmail() {
+    var btn = document.getElementById('send-confirmation-btn');
+    var statusEl = document.getElementById('confirmation-status');
+    var envelopeId = document.getElementById('envelope-id').textContent;
+
+    if (!envelopeId || envelopeId === '—') {
+        statusEl.textContent = 'No envelope found. Send the contract first.';
+        statusEl.style.color = '#ef4444';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    statusEl.textContent = 'Retrieving signed contract and sending email...';
+    statusEl.style.color = 'var(--text-muted)';
+
+    try {
+        var result = await callAppsScript('sendConfirmation', {
+            envelopeId: envelopeId,
+            jobUUID: state.jobUUID,
+            customerEmail: state.customer.email,
+            customerName: state.customer.firstName + ' ' + state.customer.lastName,
+            estimateNumber: state.estimateNumber
+        });
+
+        if (result && result.success) {
+            btn.textContent = 'Confirmation Sent!';
+            btn.style.background = '#00e5a0';
+            btn.style.color = '#0f172a';
+            statusEl.textContent = 'Signed contract emailed to ' + state.customer.email;
+            statusEl.style.color = '#00e5a0';
+        } else {
+            btn.textContent = 'Send Signed Contract to Customer';
+            btn.disabled = false;
+            statusEl.textContent = (result && result.error) || 'Failed to send. The contract may not be signed yet.';
+            statusEl.style.color = '#ef4444';
+        }
+    } catch (err) {
+        btn.textContent = 'Send Signed Contract to Customer';
+        btn.disabled = false;
+        statusEl.textContent = 'Error: ' + err.message;
+        statusEl.style.color = '#ef4444';
     }
 }
 
