@@ -1813,7 +1813,23 @@ async function approveAndSend() {
             }).catch(function() {});
         }
 
-        // Create DocuSign envelope (using pre-generated PDF)
+        // Step 1: Create Stripe Checkout Session FIRST (so we can include payment link in DocuSign email)
+        var stripeResult = null;
+        var stripeCheckoutUrl = '';
+        try {
+            stripeResult = await callAppsScript('createStripeCheckout', {
+                jobUUID: state.jobUUID,
+                amount: Math.round(state.deposit * 100), // cents
+                customerEmail: state.customer.email,
+                estimateNumber: state.estimateNumber
+            });
+            console.log('Stripe result:', JSON.stringify(stripeResult));
+            stripeCheckoutUrl = (stripeResult && stripeResult.checkoutUrl) || '';
+        } catch (stripeErr) {
+            console.error('Stripe checkout failed:', stripeErr);
+        }
+
+        // Step 2: Create DocuSign envelope with Stripe payment link included in email
         try {
             var envelopeResult = await callAppsScript('createDocuSignEnvelope', {
                 jobUUID: state.jobUUID,
@@ -1821,29 +1837,16 @@ async function approveAndSend() {
                 customerName: state.customer.firstName + ' ' + state.customer.lastName,
                 pdfBase64: pdfBase64,
                 depositAmount: state.deposit,
-                estimateNumber: state.estimateNumber
+                estimateNumber: state.estimateNumber,
+                stripeCheckoutUrl: stripeCheckoutUrl
             });
 
-            // Create Stripe Checkout Session
-            var stripeResult = null;
-            try {
-                stripeResult = await callAppsScript('createStripeCheckout', {
-                    jobUUID: state.jobUUID,
-                    amount: Math.round(state.deposit * 100), // cents
-                    customerEmail: state.customer.email,
-                    estimateNumber: state.estimateNumber
-                });
-                console.log('Stripe result:', JSON.stringify(stripeResult));
-            } catch (stripeErr) {
-                console.error('Stripe checkout failed:', stripeErr);
-            }
-
             if (!envelopeResult) envelopeResult = {};
-            envelopeResult.stripeCheckoutUrl = (stripeResult && stripeResult.checkoutUrl) || '';
+            envelopeResult.stripeCheckoutUrl = stripeCheckoutUrl;
             showSendSuccess(envelopeResult);
         } catch (err) {
-            console.error('DocuSign/Stripe failed:', err);
-            showSendSuccess({ envelopeId: 'ERROR-' + Date.now().toString(36).toUpperCase() });
+            console.error('DocuSign failed:', err);
+            showSendSuccess({ envelopeId: 'ERROR-' + Date.now().toString(36).toUpperCase(), stripeCheckoutUrl: stripeCheckoutUrl });
         }
     } else {
         // Demo mode — simulate sending
