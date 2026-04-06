@@ -1825,13 +1825,20 @@ async function approveAndSend() {
             });
 
             // Create Stripe Checkout Session
-            var stripeResult = await callAppsScript('createStripeCheckout', {
-                jobUUID: state.jobUUID,
-                amount: Math.round(state.deposit * 100), // cents
-                customerEmail: state.customer.email,
-                estimateNumber: state.estimateNumber
-            });
+            var stripeResult = null;
+            try {
+                stripeResult = await callAppsScript('createStripeCheckout', {
+                    jobUUID: state.jobUUID,
+                    amount: Math.round(state.deposit * 100), // cents
+                    customerEmail: state.customer.email,
+                    estimateNumber: state.estimateNumber
+                });
+                console.log('Stripe result:', JSON.stringify(stripeResult));
+            } catch (stripeErr) {
+                console.error('Stripe checkout failed:', stripeErr);
+            }
 
+            if (!envelopeResult) envelopeResult = {};
             envelopeResult.stripeCheckoutUrl = (stripeResult && stripeResult.checkoutUrl) || '';
             showSendSuccess(envelopeResult);
         } catch (err) {
