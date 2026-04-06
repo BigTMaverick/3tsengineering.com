@@ -1022,8 +1022,18 @@
                         </div>
                     </div>
 
+                    <!-- Stripe Payment Section -->
+                    <div style="margin-top: 24px; text-align: center;">
+                        <a id="pay-deposit-btn" class="btn btn-accent btn-lg hidden" href="#" target="_blank" style="display: inline-block; width: 80%; text-decoration: none;">
+                            Pay 40% Deposit Now
+                        </a>
+                        <button id="copy-payment-link" class="btn btn-outline hidden" onclick="copyPaymentLink()" style="margin-top: 10px; width: 80%;">
+                            Copy Payment Link for Customer
+                        </button>
+                    </div>
+
                     <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px; text-align: center;">
-                        Customer will receive a DocuSign email with the contract and Stripe payment link for the 40% deposit.
+                        Customer will receive a DocuSign email with the contract. Use the payment link above to collect the 40% deposit via Stripe.
                     </p>
                 </div>
 
@@ -1805,13 +1815,14 @@ async function approveAndSend() {
             });
 
             // Create Stripe Checkout Session
-            await callAppsScript('createStripeCheckout', {
+            var stripeResult = await callAppsScript('createStripeCheckout', {
                 jobUUID: state.jobUUID,
                 amount: Math.round(state.deposit * 100), // cents
                 customerEmail: state.customer.email,
                 estimateNumber: state.estimateNumber
             });
 
+            envelopeResult.stripeCheckoutUrl = (stripeResult && stripeResult.checkoutUrl) || '';
             showSendSuccess(envelopeResult);
         } catch (err) {
             console.error('DocuSign/Stripe failed:', err);
@@ -1835,6 +1846,41 @@ function showSendSuccess(result) {
     document.getElementById('final-est-number').textContent = state.estimateNumber;
     document.getElementById('final-total').textContent = formatCurrency(state.grandTotal);
     document.getElementById('final-deposit').textContent = formatCurrency(state.deposit);
+
+    // Show Stripe payment button if checkout URL available
+    var payBtn = document.getElementById('pay-deposit-btn');
+    var copyBtn = document.getElementById('copy-payment-link');
+    if (payBtn && result.stripeCheckoutUrl) {
+        payBtn.href = result.stripeCheckoutUrl;
+        payBtn.classList.remove('hidden');
+        payBtn.style.display = 'inline-block';
+        if (copyBtn) {
+            copyBtn.classList.remove('hidden');
+            copyBtn.style.display = 'inline-block';
+        }
+        state.stripeCheckoutUrl = result.stripeCheckoutUrl;
+    }
+}
+
+function copyPaymentLink() {
+    if (state.stripeCheckoutUrl) {
+        navigator.clipboard.writeText(state.stripeCheckoutUrl).then(function() {
+            var btn = document.getElementById('copy-payment-link');
+            btn.textContent = 'Copied!';
+            setTimeout(function() { btn.textContent = 'Copy Payment Link for Customer'; }, 2000);
+        }).catch(function() {
+            // Fallback for older browsers
+            var input = document.createElement('input');
+            input.value = state.stripeCheckoutUrl;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            var btn = document.getElementById('copy-payment-link');
+            btn.textContent = 'Copied!';
+            setTimeout(function() { btn.textContent = 'Copy Payment Link for Customer'; }, 2000);
+        });
+    }
 }
 
 // ===== APPS SCRIPT INTEGRATION =====
@@ -1939,6 +1985,10 @@ function startNewJob() {
     document.getElementById('approve-send-btn').textContent = 'Approve & Send via DocuSign';
     document.getElementById('docusign-status').classList.remove('hidden');
     document.getElementById('docusign-sent').classList.add('hidden');
+    document.getElementById('pay-deposit-btn').classList.add('hidden');
+    document.getElementById('pay-deposit-btn').style.display = 'none';
+    document.getElementById('copy-payment-link').classList.add('hidden');
+    document.getElementById('copy-payment-link').style.display = 'none';
     document.getElementById('min-price-warning').classList.add('hidden');
     document.getElementById('discount-cap-warning').classList.add('hidden');
     document.getElementById('price-discount-row').style.display = 'none';
