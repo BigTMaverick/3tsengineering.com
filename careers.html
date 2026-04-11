@@ -531,29 +531,6 @@
       min-height: 100px;
     }
 
-    .form-group input[type="file"] {
-      padding: 10px 14px;
-      cursor: pointer;
-    }
-
-    .form-group input[type="file"]::file-selector-button {
-      background: var(--accent-light);
-      color: var(--accent);
-      border: 1px solid rgba(196, 90, 45, 0.2);
-      padding: 6px 14px;
-      border-radius: 4px;
-      font-family: var(--body-font);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-right: 10px;
-      transition: background 0.2s ease;
-    }
-
-    .form-group input[type="file"]::file-selector-button:hover {
-      background: rgba(196, 90, 45, 0.15);
-    }
-
     .file-hint {
       font-size: 13px;
       color: var(--warm-gray);
@@ -885,7 +862,7 @@
 
       <div class="apply-or-divider">or apply right here</div>
 
-      <form class="application-form" action="https://formsubmit.co/careers@3tsengineering.com" method="POST" enctype="multipart/form-data">
+      <form class="application-form" action="https://formsubmit.co/careers@3tsengineering.com" method="POST">
         <h3 class="form-title">Quick Application</h3>
         <p class="form-subtitle">Fill out the basics and we'll be in touch.</p>
 
@@ -942,9 +919,9 @@
         </div>
 
         <div class="form-group">
-          <label>Resume (optional)</label>
-          <input type="file" name="attachment" accept=".pdf,.doc,.docx,.txt">
-          <p class="file-hint">PDF, Word, or text file. Don't have one? No problem — just tell us about yourself above.</p>
+          <label>Resume Link (optional)</label>
+          <input type="url" name="resume_link" placeholder="https://drive.google.com/... or Dropbox link">
+          <p class="file-hint">Paste a Google Drive, Dropbox, or other link to your resume. Or email it to <a href="mailto:careers@3tsengineering.com" style="color: var(--accent); font-weight: 600;">careers@3tsengineering.com</a></p>
         </div>
 
         <button type="submit" class="form-submit">
