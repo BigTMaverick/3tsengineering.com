@@ -398,59 +398,209 @@
       border-radius: 50%;
     }
 
-    /* ── CTA Section ── */
-    .cta-section {
+    /* ── Apply Section ── */
+    .apply-section {
       padding: 80px 0;
-      background: var(--ink);
-      color: var(--white);
+      background: var(--off-white);
+    }
+
+    .apply-header {
       text-align: center;
+      margin-bottom: 48px;
     }
 
-    .cta-section h2 {
-      font-family: var(--heading-font);
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-
-    .cta-section p {
+    .apply-email-display {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--white);
+      border: 2px solid var(--accent);
+      padding: 16px 28px;
+      border-radius: 8px;
+      margin-top: 20px;
       font-size: 18px;
-      color: rgba(255,255,255,0.7);
-      max-width: 520px;
-      margin: 0 auto 36px;
-      line-height: 1.6;
+      font-weight: 600;
+      color: var(--ink);
     }
 
-    .cta-email {
+    .apply-email-display svg {
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .apply-email-display a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .apply-email-display a:hover {
+      color: var(--accent);
+    }
+
+    .apply-or-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 36px auto;
+      max-width: 600px;
+      color: var(--warm-gray);
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .apply-or-divider::before,
+    .apply-or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--light-gray);
+    }
+
+    /* ── Application Form ── */
+    .application-form {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: 12px;
+      padding: 40px;
+    }
+
+    .form-title {
+      font-family: var(--heading-font);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .form-subtitle {
+      font-size: 15px;
+      color: var(--warm-gray);
+      margin-bottom: 28px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .form-group label .required {
+      color: var(--accent);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--light-gray);
+      border-radius: 6px;
+      font-family: var(--body-font);
+      font-size: 15px;
+      color: var(--charcoal);
+      background: var(--white);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(196, 90, 45, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input[type="file"] {
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .form-group input[type="file"]::file-selector-button {
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid rgba(196, 90, 45, 0.2);
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-family: var(--body-font);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: background 0.2s ease;
+    }
+
+    .form-group input[type="file"]::file-selector-button:hover {
+      background: rgba(196, 90, 45, 0.15);
+    }
+
+    .file-hint {
+      font-size: 13px;
+      color: var(--warm-gray);
+      margin-top: 4px;
+    }
+
+    .form-submit {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       background: var(--accent);
       color: var(--white);
-      padding: 16px 32px;
+      padding: 14px 32px;
+      border: none;
       border-radius: 6px;
-      text-decoration: none;
+      font-family: var(--body-font);
       font-weight: 600;
-      font-size: 17px;
+      font-size: 16px;
+      cursor: pointer;
       transition: background 0.2s ease, transform 0.15s ease;
+      width: 100%;
+      justify-content: center;
     }
 
-    .cta-email:hover {
+    .form-submit:hover {
       background: var(--accent-hover);
       transform: translateY(-1px);
     }
 
-    .cta-or {
-      display: block;
-      margin-top: 20px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.45);
+    /* ── Visit Section ── */
+    .visit-section {
+      padding: 48px 0;
+      background: var(--ink);
+      color: var(--white);
+      text-align: center;
     }
 
-    .cta-address {
-      margin-top: 8px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.45);
+    .visit-section p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 6px;
+    }
+
+    .visit-section .visit-address {
+      font-size: 17px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
     }
 
     /* ── Footer ── */
@@ -471,12 +621,15 @@
       .benefits-grid { grid-template-columns: 1fr; }
       .position-card { grid-template-columns: 1fr; gap: 16px; }
       .role-details { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .application-form { padding: 28px 20px; }
     }
 
     @media (max-width: 600px) {
       .hero h1 { font-size: 30px; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
       .section-title { font-size: 28px; }
+      .apply-email-display { font-size: 15px; padding: 12px 18px; }
     }
   </style>
 </head>
@@ -611,7 +764,7 @@
             </span>
           </div>
         </div>
-        <a href="mailto:careers@3tsengineering.com?subject=Application%20-%20Field%20Lead" class="apply-btn">
+        <a href="#apply" onclick="document.getElementById('role-select').value='Field Lead'" class="apply-btn">
           Apply Now
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -637,7 +790,7 @@
             </span>
           </div>
         </div>
-        <a href="mailto:careers@3tsengineering.com?subject=Application%20-%20Decorative%20Concrete%20Installer" class="apply-btn">
+        <a href="#apply" onclick="document.getElementById('role-select').value='Decorative Concrete Installer'" class="apply-btn">
           Apply Now
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -717,17 +870,96 @@
     </div>
   </section>
 
-  <!-- ═══ CTA ═══ -->
-  <section class="cta-section">
+  <!-- ═══ APPLY ═══ -->
+  <section class="apply-section" id="apply">
     <div class="container">
-      <h2>Ready to climb the career ladder?</h2>
-      <p>Send us your name, which role you're interested in, and a bit about your background. No fancy resume required. Start as a Decorative Concrete Installer and build your path to ownership.</p>
-      <a href="mailto:careers@3tsengineering.com?subject=Job%20Application%20-%203Ts%20Engineering" class="cta-email">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        careers@3tsengineering.com
-      </a>
-      <span class="cta-or">or stop by in person</span>
-      <p class="cta-address">18118 Chesterfield Airport Road, Suite G &middot; Chesterfield, MO 63005</p>
+      <div class="apply-header">
+        <div class="section-label">Apply Now</div>
+        <h2 class="section-title">Ready to climb the career ladder?</h2>
+        <p class="section-subtitle" style="margin-bottom: 20px;">Email us directly or fill out the form below. No fancy resume required.</p>
+        <div class="apply-email-display">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <a href="mailto:careers@3tsengineering.com">careers@3tsengineering.com</a>
+        </div>
+      </div>
+
+      <div class="apply-or-divider">or apply right here</div>
+
+      <form class="application-form" action="https://formsubmit.co/careers@3tsengineering.com" method="POST" enctype="multipart/form-data">
+        <h3 class="form-title">Quick Application</h3>
+        <p class="form-subtitle">Fill out the basics and we'll be in touch.</p>
+
+        <!-- FormSubmit config -->
+        <input type="hidden" name="_subject" value="New Career Application - 3Ts Engineering">
+        <input type="hidden" name="_captcha" value="true">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" style="display:none">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name <span class="required">*</span></label>
+            <input type="text" name="first_name" required placeholder="John">
+          </div>
+          <div class="form-group">
+            <label>Last Name <span class="required">*</span></label>
+            <input type="text" name="last_name" required placeholder="Smith">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" name="email" required placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label>Phone <span class="required">*</span></label>
+            <input type="tel" name="phone" required placeholder="(314) 555-1234">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Position You're Applying For <span class="required">*</span></label>
+          <select name="position" id="role-select" required>
+            <option value="" disabled selected>Select a role</option>
+            <option value="Field Lead">Field Lead — Concrete Resurfacing & Exterior Services</option>
+            <option value="Decorative Concrete Installer">Decorative Concrete Installer</option>
+            <option value="General Interest">Not sure yet — just interested</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Do you have a valid driver's license? <span class="required">*</span></label>
+          <select name="drivers_license" required>
+            <option value="" disabled selected>Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tell us about yourself</label>
+          <textarea name="about" placeholder="Any relevant experience, why you're interested, when you can start — whatever you want us to know."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Resume (optional)</label>
+          <input type="file" name="attachment" accept=".pdf,.doc,.docx,.txt">
+          <p class="file-hint">PDF, Word, or text file. Don't have one? No problem — just tell us about yourself above.</p>
+        </div>
+
+        <button type="submit" class="form-submit">
+          Submit Application
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══ VISIT ═══ -->
+  <section class="visit-section">
+    <div class="container">
+      <p>Or stop by in person</p>
+      <p class="visit-address">18118 Chesterfield Airport Road, Suite G &middot; Chesterfield, MO 63005</p>
     </div>
   </section>
 
