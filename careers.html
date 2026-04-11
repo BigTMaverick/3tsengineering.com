@@ -482,55 +482,6 @@
       margin-bottom: 28px;
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 6px;
-    }
-
-    .form-group label .required {
-      color: var(--accent);
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--light-gray);
-      border-radius: 6px;
-      font-family: var(--body-font);
-      font-size: 15px;
-      color: var(--charcoal);
-      background: var(--white);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(196, 90, 45, 0.1);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
     .file-hint {
       font-size: 13px;
       color: var(--warm-gray);
@@ -598,7 +549,6 @@
       .benefits-grid { grid-template-columns: 1fr; }
       .position-card { grid-template-columns: 1fr; gap: 16px; }
       .role-details { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
       .application-form { padding: 28px 20px; }
     }
 
@@ -741,7 +691,7 @@
             </span>
           </div>
         </div>
-        <a href="#apply" onclick="document.getElementById('role-select').value='Field Lead'" class="apply-btn">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
           Apply Now
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -767,7 +717,7 @@
             </span>
           </div>
         </div>
-        <a href="#apply" onclick="document.getElementById('role-select').value='Decorative Concrete Installer'" class="apply-btn">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
           Apply Now
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -862,73 +812,15 @@
 
       <div class="apply-or-divider">or apply right here</div>
 
-      <form class="application-form" action="https://formsubmit.co/careers@3tsengineering.com" method="POST">
+      <div class="application-form" style="text-align: center;">
         <h3 class="form-title">Quick Application</h3>
-        <p class="form-subtitle">Fill out the basics and we'll be in touch.</p>
-
-        <!-- FormSubmit config -->
-        <input type="hidden" name="_subject" value="New Career Application - 3Ts Engineering">
-        <input type="hidden" name="_captcha" value="true">
-        <input type="hidden" name="_template" value="table">
-        <input type="text" name="_honey" style="display:none">
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>First Name <span class="required">*</span></label>
-            <input type="text" name="first_name" required placeholder="John">
-          </div>
-          <div class="form-group">
-            <label>Last Name <span class="required">*</span></label>
-            <input type="text" name="last_name" required placeholder="Smith">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Email <span class="required">*</span></label>
-            <input type="email" name="email" required placeholder="john@example.com">
-          </div>
-          <div class="form-group">
-            <label>Phone <span class="required">*</span></label>
-            <input type="tel" name="phone" required placeholder="(314) 555-1234">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Position You're Applying For <span class="required">*</span></label>
-          <select name="position" id="role-select" required>
-            <option value="" disabled selected>Select a role</option>
-            <option value="Field Lead">Field Lead — Concrete Resurfacing & Exterior Services</option>
-            <option value="Decorative Concrete Installer">Decorative Concrete Installer</option>
-            <option value="General Interest">Not sure yet — just interested</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Do you have a valid driver's license? <span class="required">*</span></label>
-          <select name="drivers_license" required>
-            <option value="" disabled selected>Select</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Tell us about yourself</label>
-          <textarea name="about" placeholder="Any relevant experience, why you're interested, when you can start — whatever you want us to know."></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Resume Link (optional)</label>
-          <input type="url" name="resume_link" placeholder="https://drive.google.com/... or Dropbox link">
-          <p class="file-hint">Paste a Google Drive, Dropbox, or other link to your resume. Or email it to <a href="mailto:careers@3tsengineering.com" style="color: var(--accent); font-weight: 600;">careers@3tsengineering.com</a></p>
-        </div>
-
-        <button type="submit" class="form-submit">
-          Submit Application
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
-      </form>
+        <p class="form-subtitle">Fill out the basics, upload your resume, and we'll be in touch.</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="form-submit" style="display: inline-flex; text-decoration: none;">
+          Open Application Form
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+        <p class="file-hint" style="margin-top: 16px;">Opens in a new tab. You can upload your resume directly.</p>
+      </div>
     </div>
   </section>
 
