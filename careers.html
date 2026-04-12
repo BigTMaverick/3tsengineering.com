@@ -602,10 +602,109 @@
       margin-bottom: 28px;
     }
 
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .form-group label .required {
+      color: var(--accent);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--light-gray);
+      border-radius: 6px;
+      font-family: var(--body-font);
+      font-size: 15px;
+      color: var(--charcoal);
+      background: var(--white);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(196, 90, 45, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input[type="file"] {
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .form-group input[type="file"]::file-selector-button {
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid rgba(196, 90, 45, 0.2);
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-family: var(--body-font);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: background 0.2s ease;
+    }
+
+    .form-group input[type="file"]::file-selector-button:hover {
+      background: rgba(196, 90, 45, 0.15);
+    }
+
     .file-hint {
       font-size: 13px;
       color: var(--warm-gray);
       margin-top: 4px;
+    }
+
+    .form-success {
+      display: none;
+      padding: 24px;
+      background: rgba(45, 138, 78, 0.1);
+      border: 1px solid rgba(45, 138, 78, 0.2);
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .form-success h3 {
+      font-family: var(--heading-font);
+      color: var(--success);
+      margin-bottom: 6px;
+    }
+
+    .form-success p {
+      color: var(--slate);
+      font-size: 15px;
+    }
+
+    .form-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .form-submit {
@@ -692,6 +791,7 @@
       .nav-right a:last-child { border-bottom: none; }
       .jd-content { padding: 0 24px 28px; }
       .application-form { padding: 28px 20px; }
+      .form-row { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 600px) {
@@ -860,7 +960,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
+          <a href="#apply" class="apply-btn" onclick="applyForRole(this); return false;">
             Apply Now
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
@@ -946,7 +1046,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
+          <a href="#apply" class="apply-btn" onclick="applyForRole(this); return false;">
             Apply Now
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
@@ -1031,7 +1131,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
             </button>
           </div>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
+          <a href="#apply" class="apply-btn" onclick="applyForRole(this); return false;">
             Apply Now
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
@@ -1098,14 +1198,74 @@
 
       <div class="apply-or-divider">or apply right here</div>
 
-      <div class="application-form" style="text-align: center;">
+      <div class="application-form" id="applicationForm">
         <h3 class="form-title">Quick Application</h3>
-        <p class="form-subtitle">Fill out the basics, upload your resume, and we'll be in touch.</p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="form-submit" style="display: inline-flex; text-decoration: none;">
-          Open Application Form
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-        </a>
-        <p class="file-hint" style="margin-top: 16px;">Opens in a new tab. You can upload your resume directly.</p>
+        <p class="form-subtitle">Fill out the basics, upload your resume, and we'll be in touch. No sign-in required.</p>
+
+        <form id="careerForm" onsubmit="submitApplication(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name <span class="required">*</span></label>
+              <input type="text" name="first_name" required placeholder="John">
+            </div>
+            <div class="form-group">
+              <label>Last Name <span class="required">*</span></label>
+              <input type="text" name="last_name" required placeholder="Smith">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email <span class="required">*</span></label>
+              <input type="email" name="email" required placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+              <label>Phone <span class="required">*</span></label>
+              <input type="tel" name="phone" required placeholder="(314) 555-1234">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Position You're Applying For <span class="required">*</span></label>
+            <select name="position" id="role-select" required>
+              <option value="" disabled selected>Select a role</option>
+              <option value="Field Lead">Field Lead — Concrete Resurfacing & Exterior Services</option>
+              <option value="Decorative Concrete Installer">Decorative Concrete Installer</option>
+              <option value="Summer Intern">Summer Intern — Construction & Field Operations</option>
+              <option value="General Interest">Not sure yet — just interested</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Do you have a valid driver's license? <span class="required">*</span></label>
+            <select name="drivers_license" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tell us about yourself</label>
+            <textarea name="about" placeholder="Any relevant experience, why you're interested, when you can start — whatever you want us to know."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Resume (optional)</label>
+            <input type="file" name="resume" id="resumeFile" accept=".pdf,.doc,.docx,.txt">
+            <p class="file-hint">PDF, Word, or text file (max 5MB). Don't have one? No problem — just tell us about yourself above.</p>
+          </div>
+
+          <button type="submit" class="form-submit" id="submitBtn">
+            Submit Application
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <div class="form-success" id="formSuccess">
+          <h3>Application Received!</h3>
+          <p>Thanks for applying. We'll review your info and be in touch soon.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1126,6 +1286,7 @@
   </footer>
 
   <script>
+    // JD toggle
     function toggleJD(btn) {
       var card = btn.closest('.position-card');
       var expand = card.querySelector('.jd-expand');
@@ -1138,6 +1299,87 @@
       }
     }
 
+    // Apply Now button — scroll to form and pre-select role
+    function applyForRole(btn) {
+      var card = btn.closest('.position-card');
+      var title = card.querySelector('h3').textContent.trim();
+      var roleMap = {
+        'Field Lead': 'Field Lead',
+        'Decorative Concrete Installer': 'Decorative Concrete Installer',
+        'Summer Intern': 'Summer Intern'
+      };
+      var select = document.getElementById('role-select');
+      for (var key in roleMap) {
+        if (title.indexOf(key) !== -1) {
+          select.value = roleMap[key];
+          break;
+        }
+      }
+      document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Form submission to Apps Script
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2jcwLZugHAzcblI-NYbvCmDDvHajWFd1JTTgJJ1i_bI-oNvzHcI3Cx6aiC0us-g3J/exec';
+
+    function submitApplication(e) {
+      e.preventDefault();
+      var btn = document.getElementById('submitBtn');
+      var form = document.getElementById('careerForm');
+      btn.disabled = true;
+      btn.firstChild.textContent = 'Submitting... ';
+
+      var data = {
+        first_name: form.first_name.value,
+        last_name: form.last_name.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        position: form.position.value,
+        drivers_license: form.drivers_license.value,
+        about: form.about.value,
+        resume_data: '',
+        resume_name: '',
+        resume_type: ''
+      };
+
+      var fileInput = document.getElementById('resumeFile');
+      if (fileInput.files.length > 0) {
+        var file = fileInput.files[0];
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Resume file must be under 5MB.');
+          btn.disabled = false;
+          btn.firstChild.textContent = 'Submit Application ';
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+          data.resume_data = evt.target.result.split(',')[1];
+          data.resume_name = file.name;
+          data.resume_type = file.type;
+          sendFormData(data, btn, form);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        sendFormData(data, btn, form);
+      }
+    }
+
+    function sendFormData(data, btn, form) {
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(function() {
+        form.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      })
+      .catch(function() {
+        form.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      });
+    }
+
     // Mobile hamburger menu
     var hamburger = document.getElementById('navHamburger');
     var navRight = document.getElementById('navRight');
@@ -1145,7 +1387,6 @@
       hamburger.classList.toggle('open');
       navRight.classList.toggle('open');
     });
-    // Close menu when a link is clicked
     navRight.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() {
         hamburger.classList.remove('open');
