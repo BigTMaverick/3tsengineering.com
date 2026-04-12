@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Careers | 3Ts Engineering</title>
+  <link rel="icon" type="image/svg+xml" href="3ts-logo-icon.svg">
+  <title>Careers | 3T's Engineering.AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -43,12 +44,50 @@
       padding: 0 24px;
     }
 
+    /* ── Navigation ── */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(196, 90, 45, 0.1);
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .nav-logo-link {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-right a {
+      color: var(--charcoal);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-right a:hover,
+    .nav-right a.nav-active {
+      color: var(--accent);
+    }
+
     /* ── Hero Section ── */
     .hero {
       position: relative;
       background: linear-gradient(165deg, var(--ink) 0%, #1e2a3a 50%, #243447 100%);
       color: var(--white);
-      padding: 100px 0 80px;
+      padding: 170px 0 80px;
       overflow: hidden;
     }
 
@@ -594,10 +633,12 @@
     @media (max-width: 900px) {
       .hero-content { grid-template-columns: 1fr; gap: 40px; }
       .hero h1 { font-size: 36px; }
-      .hero { padding: 64px 0 48px; }
+      .hero { padding: 134px 0 48px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
       .benefits-grid { grid-template-columns: 1fr; }
       .position-header { grid-template-columns: 1fr; gap: 16px; }
+      .nav-right { gap: 16px; }
+      .nav-right a { font-size: 13px; }
       .jd-content { padding: 0 24px 28px; }
       .application-form { padding: 28px 20px; }
     }
@@ -611,6 +652,22 @@
   </style>
 </head>
 <body>
+
+  <!-- ═══ NAVIGATION ═══ -->
+  <nav class="site-nav">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between; height: 70px;">
+      <a href="index.html" class="nav-logo-link">
+        <img src="3ts-logo-full.svg" alt="3T's Engineering.AI" style="height: 40px; width: auto;">
+      </a>
+      <div class="nav-right">
+        <a href="index.html">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#about">About</a>
+        <a href="careers.html" class="nav-active">Careers</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
 
   <!-- ═══ HERO ═══ -->
   <section class="hero">
@@ -719,7 +776,7 @@
     <div class="container">
       <div class="section-label">Open Positions</div>
       <h2 class="section-title">One career. Three levels.</h2>
-      <p class="section-subtitle">Start at the bottom, earn your way up. Both positions are based in the St. Louis metro area with immediate start dates available.</p>
+      <p class="section-subtitle">Start at the bottom, earn your way up. All positions are based in the St. Louis metro area with immediate start dates available.</p>
 
       <!-- Position 1: Field Lead -->
       <div class="position-card">
@@ -891,6 +948,81 @@
           </div>
         </div>
       </div>
+
+      <!-- Position 3: Summer Intern -->
+      <div class="position-card">
+        <div class="position-header">
+          <div>
+            <h3>Summer Intern — Construction & Field Operations</h3>
+            <p class="desc">A hands-on summer internship for students and early-career candidates who want real field experience in construction and concrete work. Learn the trade, work alongside our crews, and see if this career path is right for you.</p>
+            <div class="position-meta">
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Chesterfield, MO
+              </span>
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                Summer 2026, Paid
+              </span>
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Path to Full-Time
+              </span>
+            </div>
+            <button class="jd-toggle" onclick="toggleJD(this)">
+              View Full Description
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
+            Apply Now
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="jd-expand">
+          <div class="jd-content">
+            <h4>Role Overview</h4>
+            <p>This paid summer internship (May-August 2026) gives you hands-on experience in decorative concrete installation, exterior services, and field operations. You'll work alongside experienced installers and field leads on real job sites across the St. Louis metro area. This is physical, outdoor work — perfect for someone who wants to learn a skilled trade and decide if construction is their career path.</p>
+
+            <h4>What You'll Do</h4>
+            <ul class="role-list">
+              <li>Assist with concrete surface preparation: grinding, etching, pressure washing</li>
+              <li>Help mix and apply concrete overlays, sealers, and coatings</li>
+              <li>Learn to operate hand tools and power equipment under supervision</li>
+              <li>Support decorative finishing work: stamping, staining, sealing</li>
+              <li>Maintain clean and organized job sites</li>
+              <li>Follow all safety protocols and wear required PPE</li>
+              <li>Participate in crew meetings and learn project management basics</li>
+            </ul>
+
+            <h4>Who Should Apply</h4>
+            <ul class="role-list">
+              <li>Currently enrolled in college, trade school, or recently graduated high school</li>
+              <li>Physically fit and comfortable with outdoor work in summer heat</li>
+              <li>Reliable — you show up on time and ready to work</li>
+              <li>Curious and eager to learn a skilled trade</li>
+              <li>Valid driver's license with reliable transportation</li>
+              <li>Able to pass a drug test and background check</li>
+            </ul>
+
+            <h4>What We Provide</h4>
+            <ul class="role-list">
+              <li>Competitive hourly pay for the duration of the internship</li>
+              <li>All tools, equipment, and PPE provided</li>
+              <li>Mentorship from experienced field professionals</li>
+              <li>Real-world construction experience for your resume</li>
+              <li>Strong performers are offered full-time Installer positions at the end of summer</li>
+            </ul>
+
+            <div class="jd-career-path">
+              <h4>From Intern to Career</h4>
+              <p><strong>Summer Intern:</strong> Learn the craft, prove your work ethic, get paid while you learn.</p>
+              <p><strong>Full-Time Installer:</strong> Top performers get offered a permanent Installer position.</p>
+              <p><strong>Field Lead → Superintendent:</strong> From there, the same career ladder applies — with profit sharing at the top.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -932,7 +1064,7 @@
   <!-- ═══ FOOTER ═══ -->
   <footer class="careers-footer">
     <div class="container">
-      &copy; 2026 3Ts Engineering. All rights reserved.
+      &copy; 2026 3T's Engineering.AI. All rights reserved.
     </div>
   </footer>
 

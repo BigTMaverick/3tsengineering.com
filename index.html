@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3T's Engineering.AI - Engineering Excellence & Innovation</title>
+    <meta name="description" content="3T's Engineering.AI delivers precision concrete resurfacing, decorative concrete, power washing, and exterior services across the St. Louis metro area. Engineering excellence powered by innovation.">
     <link rel="icon" type="image/svg+xml" href="3ts-logo-icon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -967,7 +968,12 @@
             <h2>Let's Work Together</h2>
             <p class="contact-intro">Have a project in mind or want to discuss how we can help transform your operations? Get in touch with our team.</p>
 
-            <form class="contact-form" id="contactForm">
+            <form class="contact-form" id="contactForm" action="https://formsubmit.co/Bob@3tsengineering.com" method="POST">
+                <input type="hidden" name="_subject" value="New Contact Form Submission - 3Ts Engineering">
+                <input type="hidden" name="_captcha" value="true">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_next" value="https://3tsengineering.com/">
+                <input type="text" name="_honey" style="display:none">
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -1024,6 +1030,7 @@
                 <p><a href="#services">Services</a></p>
                 <p><a href="#about">About</a></p>
                 <p><a href="#blog">Insights</a></p>
+                <p><a href="careers.html">Careers</a></p>
             </div>
 
             <div class="footer-section">
@@ -1096,36 +1103,7 @@
             });
         });
 
-        // Form submission handler (prevents actual submission for now)
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Get form data
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                company: document.getElementById('company').value,
-                message: document.getElementById('message').value
-            };
-
-            // Show success message
-            const form = this;
-            const originalHTML = form.innerHTML;
-
-            form.innerHTML = `
-                <div style="padding: 30px; text-align: center; background: rgba(240, 149, 149, 0.1); border-radius: 8px;">
-                    <h3 style="color: #FFFFFF; margin-bottom: 10px;">Thank You!</h3>
-                    <p style="color: rgba(255, 255, 255, 0.9); margin: 0;">Your message has been received. We'll be in touch within 24 hours.</p>
-                </div>
-            `;
-
-            // Reset form after 3 seconds
-            setTimeout(() => {
-                form.innerHTML = originalHTML;
-                // Re-attach the submit handler
-                document.getElementById('contactForm').addEventListener('submit', arguments.callee);
-            }, 3000);
-        });
+        // Contact form - handled by FormSubmit.co (no JS interception needed)
 
         // Sticky nav shadow on scroll
         window.addEventListener('scroll', () => {
