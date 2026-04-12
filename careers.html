@@ -260,18 +260,22 @@
       background: var(--white);
       border: 1px solid var(--light-gray);
       border-radius: 8px;
-      padding: 36px 40px;
       margin-bottom: 20px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 32px;
-      align-items: center;
+      overflow: hidden;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .position-card:hover {
       border-color: #d0d0d8;
       box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .position-header {
+      padding: 36px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
     }
 
     .position-meta {
@@ -332,45 +336,70 @@
       transform: translateY(-1px);
     }
 
-    /* ── What You'll Do Section ── */
-    .details-section {
-      padding: 80px 0;
-    }
-
-    .role-details {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-    }
-
-    .role-block {
-      padding: 36px;
+    /* ── Expandable Job Description ── */
+    .jd-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
       border: 1px solid var(--light-gray);
-      border-radius: 8px;
-    }
-
-    .role-block h3 {
-      font-family: var(--heading-font);
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 6px;
-    }
-
-    .role-block .role-subtitle {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: var(--body-font);
       font-size: 14px;
-      color: var(--accent);
       font-weight: 600;
-      margin-bottom: 20px;
+      color: var(--accent);
+      cursor: pointer;
+      margin-top: 14px;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
-    .role-block h4 {
+    .jd-toggle:hover {
+      background: var(--accent-light);
+      border-color: var(--accent);
+    }
+
+    .jd-toggle svg {
+      transition: transform 0.3s ease;
+    }
+
+    .jd-toggle.open svg {
+      transform: rotate(180deg);
+    }
+
+    .jd-expand {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .jd-expand.open {
+      max-height: 3000px;
+    }
+
+    .jd-content {
+      padding: 0 40px 36px;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .jd-content h4 {
       font-family: var(--heading-font);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--ink);
-      margin-top: 20px;
+      margin-top: 24px;
       margin-bottom: 10px;
+    }
+
+    .jd-content h4:first-child {
+      margin-top: 28px;
+    }
+
+    .jd-content p {
+      font-size: 15px;
+      color: var(--slate);
+      line-height: 1.6;
+      margin-bottom: 12px;
     }
 
     .role-list {
@@ -396,6 +425,27 @@
       height: 6px;
       background: var(--accent);
       border-radius: 50%;
+    }
+
+    .jd-career-path {
+      background: var(--accent-light);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-top: 20px;
+    }
+
+    .jd-career-path h4 {
+      margin-top: 0 !important;
+      color: var(--accent);
+    }
+
+    .jd-career-path p {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .jd-career-path strong {
+      color: var(--ink);
     }
 
     /* ── Apply Section ── */
@@ -547,8 +597,8 @@
       .hero { padding: 64px 0 48px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
       .benefits-grid { grid-template-columns: 1fr; }
-      .position-card { grid-template-columns: 1fr; gap: 16px; }
-      .role-details { grid-template-columns: 1fr; }
+      .position-header { grid-template-columns: 1fr; gap: 16px; }
+      .jd-content { padding: 0 24px 28px; }
       .application-form { padding: 28px 20px; }
     }
 
@@ -673,125 +723,172 @@
 
       <!-- Position 1: Field Lead -->
       <div class="position-card">
-        <div>
-          <h3>Field Lead — Concrete Resurfacing & Exterior Services</h3>
-          <p class="desc">Leadership role managing crews and jobs. Earned by proven Installers who show leadership potential. Clear path to Superintendent with profit sharing and open-book financials.</p>
-          <div class="position-meta">
-            <span class="position-tag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Chesterfield, MO
-            </span>
-            <span class="position-tag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              Full-Time, W-2
-            </span>
-            <span class="position-tag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
-              Superintendent Track
-            </span>
+        <div class="position-header">
+          <div>
+            <h3>Field Lead — Concrete Resurfacing & Exterior Services</h3>
+            <p class="desc">Leadership role managing crews and jobs. Earned by proven Installers who show leadership potential. Clear path to Superintendent with profit sharing and open-book financials.</p>
+            <div class="position-meta">
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Chesterfield, MO
+              </span>
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                Full-Time, 1099
+              </span>
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                Superintendent Track
+              </span>
+            </div>
+            <button class="jd-toggle" onclick="toggleJD(this)">
+              View Full Description
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
+            Apply Now
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="jd-expand">
+          <div class="jd-content">
+            <h4>Role Overview</h4>
+            <p>As a Field Lead at 3Ts Engineering, you'll manage, lead, and physically work alongside concrete crews on active job sites, overseeing all aspects of concrete resurfacing and exterior work. You'll coordinate crews, ensure quality execution, drive safety culture, and serve as the main point of contact between your team and project management.</p>
+
+            <h4>Key Responsibilities</h4>
+            <ul class="role-list">
+              <li>Lead, supervise, and mentor a field crew (typically 2-4 people) on assigned projects</li>
+              <li>Assign daily tasks and coordinate crew workflow to meet project deadlines</li>
+              <li>Oversee all concrete resurfacing, finishing, and exterior work to company standards</li>
+              <li>Lead by example: follow all safety protocols and OSHA guidelines without exception</li>
+              <li>Conduct pre-shift safety meetings and daily site safety inspections</li>
+              <li>Monitor and maintain all equipment and tools assigned to your crew</li>
+              <li>Communicate regularly with customers and leadership on progress and issues</li>
+              <li>Document daily work activities, crew hours, and materials used</li>
+            </ul>
+
+            <h4>What You Bring</h4>
+            <ul class="role-list">
+              <li>3-5 years hands-on experience in concrete work, construction, or related trades</li>
+              <li>Proven experience in a leadership or supervisory role (crew lead, foreman, etc.)</li>
+              <li>Strong working knowledge of concrete resurfacing, finishing, and exterior work</li>
+              <li>Problem-solving mindset — you troubleshoot issues quickly under pressure</li>
+              <li>Valid driver's license with reliable transportation</li>
+              <li>Ability to pass a background check and drug screening</li>
+            </ul>
+
+            <h4>Bonus Points</h4>
+            <ul class="role-list">
+              <li>Concrete, forming, or hardscape experience</li>
+              <li>Previous concrete foreman or equivalent trade experience</li>
+              <li>Customer service or client-facing experience</li>
+              <li>Bilingual (English/Spanish)</li>
+            </ul>
+
+            <h4>What We Provide</h4>
+            <ul class="role-list">
+              <li>Complete tool & equipment package — no personal investment required</li>
+              <li>Full PPE: hard hats, safety glasses, gloves, work boots, and all required gear</li>
+              <li>Competitive pay with quarterly performance bonuses</li>
+              <li>On-the-job mentorship and leadership development</li>
+              <li>OSHA certification, first aid/CPR, and ongoing safety training</li>
+              <li>Business acumen education — learn P&L management as you prepare for Superintendent</li>
+              <li>Year-round work with consistent projects</li>
+            </ul>
+
+            <div class="jd-career-path">
+              <h4>Career Path</h4>
+              <p><strong>Installer (0-3 years):</strong> Learn the craft, master concrete resurfacing, build safety and reliability foundation.</p>
+              <p><strong>Field Lead (3-5+ years):</strong> Step into leadership while staying hands-on. Manage crews, drive quality and safety. You are here.</p>
+              <p><strong>Superintendent (5+ years):</strong> Lead multiple crews and projects. Manage P&L, make strategic decisions, participate in profit sharing through our open-book financial system.</p>
+            </div>
           </div>
         </div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
-          Apply Now
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
       </div>
 
       <!-- Position 2: Decorative Concrete Installer -->
       <div class="position-card">
-        <div>
-          <h3>Decorative Concrete Installer</h3>
-          <p class="desc">The entry point to your career with 3Ts. Setting forms, pouring, finishing, and breaking down. Hard physical work with real pay, training, and a clear path to Field Lead and beyond for those who prove themselves.</p>
-          <div class="position-meta">
-            <span class="position-tag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Chesterfield, MO
-            </span>
-            <span class="position-tag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              Full-Time, W-2
-            </span>
-            <span class="position-tag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-              Path to Field Lead
-            </span>
+        <div class="position-header">
+          <div>
+            <h3>Decorative Concrete Installer</h3>
+            <p class="desc">The entry point to your career with 3Ts. Setting forms, pouring, finishing, and breaking down. Hard physical work with real pay, training, and a clear path to Field Lead and beyond for those who prove themselves.</p>
+            <div class="position-meta">
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Chesterfield, MO
+              </span>
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                Full-Time, 1099
+              </span>
+              <span class="position-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                Path to Field Lead
+              </span>
+            </div>
+            <button class="jd-toggle" onclick="toggleJD(this)">
+              View Full Description
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
           </div>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
+            Apply Now
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfkDrxm3Bn16A1S86URY83StFbQYaxXPpOEqni1LymABDbD0g/viewform" target="_blank" rel="noopener" class="apply-btn">
-          Apply Now
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </section>
+        <div class="jd-expand">
+          <div class="jd-content">
+            <h4>Role Overview</h4>
+            <p>As a Decorative Concrete Installer, you'll be at the heart of our operations — learning, building, and mastering the craft of decorative concrete work. You'll work alongside experienced installers and field leads on residential and commercial projects throughout the St. Louis area. No prior concrete experience required — we'll train you.</p>
 
-  <!-- ═══ ROLE DETAILS ═══ -->
-  <section class="details-section">
-    <div class="container">
-      <div class="section-label">Role Details</div>
-      <h2 class="section-title">What we're looking for.</h2>
-      <p class="section-subtitle">No fluff. Here's exactly who fits these roles and what you'll be doing.</p>
+            <h4>Key Responsibilities</h4>
+            <ul class="role-list">
+              <li>Prepare concrete surfaces for resurfacing: grinding, etching, pressure washing, and removing debris</li>
+              <li>Mix and apply concrete overlays, epoxies, sealers, and specialty coatings</li>
+              <li>Operate hand tools and power equipment: trowels, grinders, polishers, mixers</li>
+              <li>Apply decorative finishes including stamped patterns, color stains, and sealants</li>
+              <li>Screed, float, and finish concrete surfaces to smooth, uniform results</li>
+              <li>Work on hands and knees, lift and carry materials (up to 100 lbs regularly)</li>
+              <li>Maintain clean, organized job sites and properly store all tools and equipment</li>
+              <li>Follow all safety protocols, wear required PPE, and work safely in all weather</li>
+            </ul>
 
-      <div class="role-details">
-        <!-- Field Lead -->
-        <div class="role-block">
-          <h3>Field Lead</h3>
-          <div class="role-subtitle">Mid-Level → Superintendent (Profit Sharing)</div>
+            <h4>What You Bring</h4>
+            <ul class="role-list">
+              <li>Physically fit — can regularly lift 50-100 lbs, work on hands/knees, and perform demanding labor</li>
+              <li>Reliable — show up ready to work, on time, committed to the job</li>
+              <li>Willing to learn — open to training and mastering new skills</li>
+              <li>Team player — communicate well, follow instructions, work collaboratively</li>
+              <li>Valid driver's license with reliable transportation</li>
+              <li>Able to pass a drug test and background check</li>
+            </ul>
 
-          <h4>Who You Are</h4>
-          <ul class="role-list">
-            <li>Proven performer who came up through our Installer ranks (or equivalent experience)</li>
-            <li>Natural leader with crew management and job site experience</li>
-            <li>Energetic, solution-focused, and comfortable in heat, cold, mud, and long days</li>
-            <li>Want to grow into leadership and earn equity in the business</li>
-            <li>Reliable transportation, valid driver's license, clean record</li>
-          </ul>
+            <h4>Bonus Points</h4>
+            <ul class="role-list">
+              <li>Any concrete forming experience (huge plus)</li>
+              <li>Flatwork, hardscape, or paving background</li>
+              <li>Familiarity with hand tools, power tools, and construction equipment</li>
+              <li>Bilingual (English/Spanish)</li>
+            </ul>
 
-          <h4>Bonus Points</h4>
-          <ul class="role-list">
-            <li>Concrete, forming, or hardscape experience</li>
-            <li>Crew lead or foreman experience</li>
-            <li>Bilingual (English/Spanish)</li>
-          </ul>
+            <h4>What We Provide</h4>
+            <ul class="role-list">
+              <li>All hand tools, power equipment, and specialty tools provided</li>
+              <li>All PPE: gloves, safety glasses, respirators, harnesses as needed</li>
+              <li>Competitive pay commensurate with experience and performance</li>
+              <li>On-the-job mentorship from experienced installers and field leads</li>
+              <li>Comprehensive training in concrete finishing, stamping, sealing, and resurfacing</li>
+              <li>Overtime available and regular, steady work</li>
+            </ul>
 
-          <h4>What We Offer</h4>
-          <ul class="role-list">
-            <li>Competitive hourly + performance bonuses</li>
-            <li>All equipment, tools, and PPE provided by 3Ts</li>
-            <li>Clear promotion path to Superintendent with profit sharing and open-book financials</li>
-            <li>Year-round work across our service lines</li>
-            <li>Drug test and background check required</li>
-          </ul>
-        </div>
-
-        <!-- Installer -->
-        <div class="role-block">
-          <h3>Decorative Concrete Installer</h3>
-          <div class="role-subtitle">Entry Point → Field Lead → Superintendent</div>
-
-          <h4>Who You Are</h4>
-          <ul class="role-list">
-            <li>Physically fit, built for sustained ground-level labor</li>
-            <li>Hard worker who shows up on time, every time</li>
-            <li>Willing to learn — we'll train the right attitude</li>
-            <li>Reliable transportation, valid driver's license</li>
-          </ul>
-
-          <h4>Bonus Points</h4>
-          <ul class="role-list">
-            <li>Any concrete forming experience (huge plus)</li>
-            <li>Flatwork, hardscape, or paving background</li>
-            <li>Bilingual (English/Spanish)</li>
-          </ul>
-
-          <h4>What We Offer</h4>
-          <ul class="role-list">
-            <li>Competitive hourly pay</li>
-            <li>Overtime available</li>
-            <li>All equipment, tools, and PPE provided by 3Ts</li>
-            <li>Clear path to Field Lead and Superintendent promotion</li>
-            <li>Drug test and background check required</li>
-          </ul>
+            <div class="jd-career-path">
+              <h4>Career Path</h4>
+              <p><strong>Decorative Concrete Installer (your starting role):</strong> Learn the craft, build your skills, prove your reliability.</p>
+              <p><strong>Field Lead (12-24 months):</strong> Lead smaller crews, manage project details, earn supervisor compensation.</p>
+              <p><strong>Superintendent:</strong> Manage multiple crews/projects, oversee quality, profit sharing and open-book financials.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -838,6 +935,20 @@
       &copy; 2026 3Ts Engineering. All rights reserved.
     </div>
   </footer>
+
+  <script>
+    function toggleJD(btn) {
+      var card = btn.closest('.position-card');
+      var expand = card.querySelector('.jd-expand');
+      btn.classList.toggle('open');
+      expand.classList.toggle('open');
+      if (btn.classList.contains('open')) {
+        btn.firstChild.textContent = 'Hide Description ';
+      } else {
+        btn.firstChild.textContent = 'View Full Description ';
+      }
+    }
+  </script>
 
 </body>
 </html>
